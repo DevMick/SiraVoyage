@@ -33,9 +33,30 @@ jobs:
         echo "FTP Username: ${{ secrets.FTP_USERNAME }}"
         echo "FTP Password: [HIDDEN]"
         echo "Local directory: ./build/"
-        echo "Server directory: / (racine du compte FTP)"
+        echo "Server directory: /public_html/ (répertoire web)"
         echo "📁 Contenu du dossier build à déployer:"
         ls -la ./build/
+        echo "🔍 Recherche de répertoires public* :"
+        find . -type d -name "*public*" 2>/dev/null || echo "Aucun répertoire public trouvé"
+
+    - name: Test FTP Connection and List Directories
+      run: |
+        echo "🔍 Test de connexion FTP et exploration des répertoires..."
+        # Installation de lftp pour tester la connexion
+        sudo apt-get update && sudo apt-get install -y lftp
+
+        # Test de connexion et listage des répertoires
+        lftp -c "
+        set ftp:ssl-allow no;
+        open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_HOST }};
+        echo '📁 Répertoire racine du compte FTP:';
+        ls -la;
+        echo '🔍 Recherche de public_html:';
+        ls -la | grep public || echo 'Aucun répertoire public_html trouvé à la racine';
+        echo '📂 Tentative d accès à public_html:';
+        cd public_html 2>/dev/null && ls -la || echo 'Impossible d accéder à public_html';
+        quit;
+        "
       
     - name: Create production build
       run: |
@@ -82,7 +103,7 @@ jobs:
         port: 21
         protocol: ftp
         local-dir: ./build/
-        server-dir: /
+        server-dir: /public_html/
         timeout: 60000
         log-level: verbose
         exclude: |
