@@ -91,10 +91,11 @@ npm run deploy
 5. **Sécurité** : Testez les headers de sécurité
 
 ### En cas de problème
-1. Consultez les logs GitHub Actions
-2. Vérifiez les fichiers sur le serveur FTP
-3. Consultez le guide de dépannage dans README.md
-4. Vérifiez les permissions des fichiers (644 pour fichiers, 755 pour dossiers)
+1. **Page Namecheap par défaut** : Consultez `FTP_SETUP_INSTRUCTIONS.md`
+2. **Erreur FTP 530** : Vérifiez les secrets GitHub (username/password)
+3. **Fichiers non visibles** : Vérifiez que les fichiers sont dans le bon répertoire web
+4. **Logs GitHub Actions** : Consultez l'onglet Actions pour les détails
+5. **Permissions** : Vérifiez les permissions des fichiers (644 pour fichiers, 755 pour dossiers)
 
 ## 🎉 Félicitations !
 

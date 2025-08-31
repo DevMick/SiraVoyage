@@ -33,7 +33,9 @@ jobs:
         echo "FTP Username: ${{ secrets.FTP_USERNAME }}"
         echo "FTP Password: [HIDDEN]"
         echo "Local directory: ./build/"
-        echo "Server directory: ./public_html/"
+        echo "Server directory: / (racine du compte FTP)"
+        echo "📁 Contenu du dossier build à déployer:"
+        ls -la ./build/
       
     - name: Create production build
       run: |
@@ -80,7 +82,7 @@ jobs:
         port: 21
         protocol: ftp
         local-dir: ./build/
-        server-dir: ./public_html/
+        server-dir: /
         timeout: 60000
         log-level: verbose
         exclude: |
