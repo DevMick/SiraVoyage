@@ -44,9 +44,9 @@
 Allez dans votre repository GitHub → Settings → Secrets and variables → Actions
 
 **Secrets obligatoires à ajouter :**
-- `FTP_HOST` : Adresse de votre serveur FTP Namecheap
-- `FTP_USERNAME` : Nom d'utilisateur FTP de votre cPanel
-- `FTP_PASSWORD` : Mot de passe FTP de votre cPanel
+- `FTP_HOST` : `ftp.omrahajjabidjan.com`
+- `FTP_USERNAME` : `DevMick@omrahajjabidjan.com`
+- `FTP_PASSWORD` : Le mot de passe que vous avez défini pour ce compte FTP
 
 **Comment obtenir ces informations :**
 1. Connectez-vous à votre cPanel Namecheap

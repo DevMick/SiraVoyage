@@ -25,6 +25,15 @@ jobs:
       
     - name: Build CSS
       run: npm run build:css
+
+    - name: Debug FTP Configuration
+      run: |
+        echo "🔍 Configuration FTP Debug:"
+        echo "FTP Host: ${{ secrets.FTP_HOST }}"
+        echo "FTP Username: ${{ secrets.FTP_USERNAME }}"
+        echo "FTP Password: [HIDDEN]"
+        echo "Local directory: ./build/"
+        echo "Server directory: ./public_html/"
       
     - name: Create production build
       run: |
@@ -68,8 +77,12 @@ jobs:
         server: ${{ secrets.FTP_HOST }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
+        port: 21
+        protocol: ftp
         local-dir: ./build/
-        server-dir: /public_html/
+        server-dir: ./public_html/
+        timeout: 60000
+        log-level: verbose
         exclude: |
           **/.git*
           **/.git*/**
@@ -77,6 +90,7 @@ jobs:
           **/.env
           **/.DS_Store
           **/Thumbs.db
+          **/package-lock.json
           
     - name: Notify deployment status
       if: always()

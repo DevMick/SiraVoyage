@@ -16,7 +16,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "prestart": "npm run build:css",
     "predeploy": "node scripts/pre-deploy-check.js",
-    "deploy": "npm run predeploy && git add . && git commit -m 'Deploy to production' && git push origin main"
+    "deploy": "npm run predeploy && git add . && git commit -m 'Deploy to production' && git push origin main",
+    "test:ftp": "node scripts/test-ftp.js"
   },
   "dependencies": {
     "express": "^4.18.2",
