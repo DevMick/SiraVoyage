@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - SIRA VOYAGE</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tailwind & Custom CSS -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            line-height: 1.1;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 900;
+        }
+        .logo-img {
+            height: 2.5rem; /* 40px pour mobile */
+            max-height: 40px;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 3.5rem; /* 56px pour desktop */
+                max-height: 56px;
+            }
+        }
+        .hero-section {
+            margin-top: 0;
+            padding-top: 80px; /* Hauteur du header */
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #D1D5DB;
+            opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+            background: #0F5132;
+        }
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0F5132;
+            margin-right: 0.8rem;
+            margin-left: 0.8rem;
+            transition: color 0.2s;
+        }
+        .nav-link:last-child {
+            margin-right: 0;
+        }
+        .nav-link:hover {
+            color: #B38F2E;
+        }
+        @media (max-width: 1023px) {
+            .nav-link {
+                margin-right: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 85%;
+            max-width: 340px;
+            background: white;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+            font-size: 0.95rem;
+            padding: 0.75rem 1.1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.18rem;
+            color: #0F5132;
+            background: #F5F5DC;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-menu .flex-col a:hover, .mobile-menu .flex-col button:hover {
+            background: #0F5132;
+            color: #fff;
+        }
+        .mobile-menu .flex-col a:last-child, .mobile-menu .flex-col button:last-child {
+            margin-bottom: 0;
+        }
+        .mobile-menu .flex-col {
+            gap: 0.5rem !important;
+        }
+        .mobile-menu .text-2xl {
+            font-size: 1.5rem;
+        }
+        .mobile-menu .p-6 {
+            padding: 1.5rem 1rem 1rem 1rem;
+        }
+        .mobile-menu .font-bold {
+            font-size: 1.3rem;
+        }
+        /* Afficher le menu hamburger et cacher le menu desktop jusqu'à 1023px */
+        @media (max-width: 1023px) {
+            .md\:flex, .hidden.md\:flex {
+                display: none !important;
+            }
+            #mobile-menu-button {
+                display: block !important;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+        }
+        /* Afficher le menu desktop et cacher le hamburger à partir de 1024px */
+        @media (min-width: 1024px) {
+            .md\:flex {
+                display: flex !important;
+            }
+            #mobile-menu-button, .mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+        header nav {
+            padding-top: 1.25rem !important; /* 20px */
+            padding-bottom: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            header nav {
+                padding-top: 1.75rem !important; /* 28px */
+                padding-bottom: 1.75rem !important;
+            }
+        }
+        @media (max-width: 1023px) {
+            .mobile-menu {
+                display: block !important;
+            }
+            .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+                font-size: 1.25rem;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                margin-bottom: 0.4rem;
+                color: #0F5132;
+                background: #F5F5DC;
+                font-weight: 600;
+                transition: background 0.2s, color 0.2s;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <nav class="container mx-auto px-4 py-2">
+            <div class="flex items-center justify-between min-h-[48px]">
+                <!-- Branding à gauche sur mobile, centré sur desktop -->
+                <div class="flex-1 flex items-center md:justify-center justify-start">
+                    <a href="/index.html" class="logo-text block text-2xl md:text-3xl font-extrabold text-black select-none" style="letter-spacing: 6px;">
+                        <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                    </a>
+                </div>
+                <!-- Menus à gauche (desktop uniquement) -->
+                <div class="hidden md:flex flex-1 items-center gap-10 md:gap-14 uppercase tracking-wider font-semibold text-base md:text-lg" style="letter-spacing: 2px;">
+                    <a href="/oumra.html" class="text-[#0F5132] nav-link">Oumra</a>
+                    <a href="/hajj.html" class="text-[#0F5132] nav-link">Hajj</a>
+                    <a href="/about.html" class="text-[#0F5132] nav-link">À propos</a>
+                    <a href="/blog.html" class="text-[#0F5132] nav-link">Blog</a>
+                </div>
+                <!-- Bouton Contact à droite (desktop uniquement) -->
+                <div class="hidden md:flex items-center flex-1 justify-end">
+                    <a href="/contact.html" class="bg-[#0F5132] text-white px-6 py-2 rounded-md hover:bg-[#0F5132]/90 transition-all duration-300 text-base font-semibold">
+                        Contact
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-[#0F5132] ml-2" id="mobile-menu-button" aria-label="Ouvrir le menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay md:hidden" id="menu-overlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-2xl font-bold text-[#0F5132]">Menu</span>
+                <button class="text-[#0F5132]" id="close-menu-button" aria-label="Fermer le menu">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <a href="/index.html" class="logo-text block text-xl font-extrabold text-black text-center mb-4" style="letter-spacing: 4px;">
+                    <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                </a>
+                <a href="/oumra.html">Oumra</a>
+                <a href="/hajj.html">Hajj</a>
+                <a href="/about.html">À propos</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+    <!-- Hero Section -->
+    <section class="pt-32 pb-16 bg-gray-50">
+        <div class="container mx-auto px-12">
+            <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+                Découvrez nos articles et actualités sur la Omra
+            </p>
+        </div>
+    </section>
+    <div id="contactFormContainer" style="display: flex; max-width: 1000px; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1); margin: 20px auto;">
+        <div id="formSection" style="flex: 1; padding: 30px;">
+          <h1 style="font-size: 32px; margin-bottom: 20px; color: #0F5132; position: relative;">
+            Contactez-nous
+            <span style="content: ''; position: absolute; bottom: -10px; left: 0; width: 60px; height: 3px; background: #0F5132; display: block;"></span>
+          </h1>
+          <form id="contactForm">
+            <div style="margin-bottom: 15px;">
+              <input type="text" name="fullName" placeholder="Nom & Prénom" required style="width: 100%; padding: 12px; border: none; background: #f5f5f5; border-radius: 10px; font-size: 16px; transition: all 0.3s;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <input type="tel" name="phone" placeholder="Numéro de Téléphone" required style="width: 100%; padding: 12px; border: none; background: #f5f5f5; border-radius: 10px; font-size: 16px; transition: all 0.3s;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <input type="email" name="email" placeholder="Email" required style="width: 100%; padding: 12px; border: none; background: #f5f5f5; border-radius: 10px; font-size: 16px; transition: all 0.3s;">
+            </div>
+            <div style="margin-bottom: 15px;">
+              <textarea name="message" placeholder="Votre message" required style="width: 100%; padding: 12px; border: none; background: #f5f5f5; border-radius: 10px; font-size: 16px; transition: all 0.3s; min-height: 120px; resize: vertical;"></textarea>
+            </div>
+            <button type="submit" style="width: 100%; padding: 12px; border: none; border-radius: 10px; background: #0F5132; color: white; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s; margin-top: 10px;">Envoyer</button>
+          </form>
+        </div>
+        <div id="imageSection" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+          <img src="/images/10.jpg" alt="Image de contact" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+        </div>
+      </div>
+      
+      <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          // Définir l'URL du script Google Apps
+          const scriptUrl = 'https://script.google.com/macros/s/AKfycbwNY3yxnEa6NxRpq-1zZ9POXvEFQQtMg-gQ_9IRJfYd959W6gj6w0g9Qvz84qDsZwnL/exec';
+          
+          // Effet hover pour le bouton
+          const submitBtn = document.querySelector('#contactForm button[type="submit"]');
+          submitBtn.addEventListener('mouseover', function() {
+            this.style.background = '#136d42'; // Version plus claire du vert
+            this.style.transform = 'translateY(-2px)';
+          });
+          submitBtn.addEventListener('mouseout', function() {
+            this.style.background = '#0F5132';
+            this.style.transform = 'translateY(0)';
+          });
+          
+          // Effet focus pour les inputs et textarea
+          const formInputs = document.querySelectorAll('#contactForm input, #contactForm textarea');
+          formInputs.forEach(input => {
+            input.addEventListener('focus', function() {
+              this.style.background = 'white';
+              this.style.boxShadow = '0 0 0 2px #0F5132';
+            });
+            input.addEventListener('blur', function() {
+              this.style.background = '#f5f5f5';
+              this.style.boxShadow = 'none';
+            });
+          });
+          
+          // Gestion de la responsivité - cacher l'image et ajuster les marges en mode mobile
+          function handleMobileLayout() {
+            const container = document.getElementById('contactFormContainer');
+            const imageSection = document.getElementById('imageSection');
+            const formSection = document.getElementById('formSection');
+            
+            if (window.innerWidth <= 768) {
+              // Mode mobile
+              imageSection.style.display = 'none';
+              container.style.width = 'calc(100% - 40px)'; // Ajoute des marges de 20px de chaque côté
+              container.style.margin = '20px auto';
+              formSection.style.padding = '25px';
+            } else {
+              // Mode desktop
+              imageSection.style.display = 'flex';
+              container.style.width = '100%';
+              container.style.maxWidth = '1000px';
+              container.style.margin = '20px auto';
+              formSection.style.padding = '30px';
+            }
+          }
+          
+          // Exécuter au chargement et à chaque redimensionnement
+          handleMobileLayout();
+          window.addEventListener('resize', handleMobileLayout);
+          
+          // Gestion du formulaire avec Google Apps Script
+          document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = this;
+            const formData = new FormData(form);
+            
+            // Afficher le message de chargement
+            Swal.fire({
+              title: 'Envoi en cours...',
+              text: 'Veuillez patienter',
+              allowOutsideClick: false,
+              showConfirmButton: false,
+              willOpen: () => { Swal.showLoading(); }
+            });
+            
+            // Envoi des données vers Google Apps Script
+            fetch(scriptUrl, {
+              method: 'POST',
+              body: formData,
+              mode: 'no-cors'
+            })
+            .then(() => {
+              // Message de succès
+              Swal.fire({
+                title: 'Message envoyé !',
+                html: `
+                  <div style="padding: 20px; background: #f7f9fc; border-radius: 5px; margin-bottom: 20px;">
+                    <div style="font-size: 18px; font-weight: bold; color: #0F5132; margin-bottom: 15px;">
+                      Merci de nous avoir contactés pour votre voyage spirituel
+                    </div>
+                    <div style="color: #666; line-height: 1.5;">
+                      Notre équipe vous répondra dans les plus brefs délais pour vous accompagner dans votre projet de Hajj ou d'Omra.
+                    </div>
+                  </div>
+                `,
+                icon: 'success',
+                confirmButtonColor: '#0F5132',
+                timer: 5000,
+                timerProgressBar: true
+              });
+              form.reset();
+            })
+            .catch(error => {
+              // Message d'erreur
+              Swal.fire({
+                title: 'Erreur',
+                text: 'Veuillez réessayer ultérieurement',
+                icon: 'error',
+                confirmButtonColor: '#0F5132'
+              });
+            });
+          });
+        });
+      </script>
+   
+    
+    <!-- Social Media Bar -->
+    <div class="border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-snapchat"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold text-[#0F5132] mb-4">Paris</h3>
+                    <p class="text-gray-600">123 Rue de la Paix</p>
+                    <p class="text-gray-600">75002 Paris, France</p>
+                    <p class="text-gray-600 mt-2">+33 1 23 45 67 89</p>
+                </div>
+
+                <!-- Logo and Description -->
+                <div class="text-center">
+                    <img src="images/Logo_Sira_Voyage.jpg" alt="SIRA VOYAGE" class="h-12 mx-auto mb-2">
+                    <p class="text-gray-600 uppercase text-sm mb-4">HAJJ OMRA & TOURISME ÉTHIQUE</p>
+                    <p class="text-gray-600">Lun - Ven: 9h - 18h</p>
+                    <p class="text-gray-600">contact@siravoyage.com</p>
+                </div>
+
+                <!-- Links and Payment -->
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <a href="#" class="text-gray-600 hover:text-[#0F5132]">A propos</a>
+                        <a href="#" class="text-gray-600 hover:text-[#0F5132]">Info pratiques</a>
+                        <a href="#" class="text-gray-600 hover:text-[#0F5132]">Conditions de vente</a>
+                        <a href="#" class="text-gray-600 hover:text-[#0F5132]">FAQs</a>
+                        <a href="#" class="text-gray-600 hover:text-[#0F5132]">Blog</a>
+                        <a href="#" class="text-gray-600 hover:text-[#0F5132]">Contact</a>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <img src="/images/paypal.png" alt="PayPal" class="h-8">
+                        <img src="/images/stripe.png" alt="Stripe" class="h-8">
+                        <img src="/images/visa.png" alt="Visa" class="h-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Call Button -->
+    <button class="fixed bottom-8 right-8 bg-[#0F5132] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-[#0F5132]/90 transition-all duration-300">
+        <i class="fas fa-phone"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        // Script pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            closeMenuButton.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+        });
+    </script>
+</body>
+</html> 

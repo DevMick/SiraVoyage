@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL BAYT - Hajj et Oumra</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tailwind & Custom CSS -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            line-height: 1.1;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 900;
+        }
+        .logo-img {
+            height: 2.5rem; /* 40px pour mobile */
+            max-height: 40px;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 3.5rem; /* 56px pour desktop */
+                max-height: 56px;
+            }
+        }
+        .hero-section {
+            margin-top: 0;
+            padding-top: 80px; /* Hauteur du header */
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #D1D5DB;
+            opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+            background: #0F5132;
+        }
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0F5132;
+            margin-right: 0.8rem;
+            margin-left: 0.8rem;
+            transition: color 0.2s;
+        }
+        .nav-link:last-child {
+            margin-right: 0;
+        }
+        .nav-link:hover {
+            color: #B38F2E;
+        }
+        @media (max-width: 1023px) {
+            .nav-link {
+                margin-right: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 85%;
+            max-width: 340px;
+            background: white;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+            font-size: 0.95rem;
+            padding: 0.75rem 1.1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.18rem;
+            color: #0F5132;
+            background: #F5F5DC;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-menu .flex-col a:hover, .mobile-menu .flex-col button:hover {
+            background: #0F5132;
+            color: #fff;
+        }
+        .mobile-menu .flex-col a:last-child, .mobile-menu .flex-col button:last-child {
+            margin-bottom: 0;
+        }
+        .mobile-menu .flex-col {
+            gap: 0.5rem !important;
+        }
+        .mobile-menu .text-2xl {
+            font-size: 1.5rem;
+        }
+        .mobile-menu .p-6 {
+            padding: 1.5rem 1rem 1rem 1rem;
+        }
+        .mobile-menu .font-bold {
+            font-size: 1.3rem;
+        }
+        /* Afficher le menu hamburger et cacher le menu desktop jusqu'à 1023px */
+        @media (max-width: 1023px) {
+            .md\:flex, .hidden.md\:flex {
+                display: none !important;
+            }
+            #mobile-menu-button {
+                display: block !important;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+        }
+        /* Afficher le menu desktop et cacher le hamburger à partir de 1024px */
+        @media (min-width: 1024px) {
+            .md\:flex {
+                display: flex !important;
+            }
+            #mobile-menu-button, .mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+        header nav {
+            padding-top: 1.25rem !important; /* 20px */
+            padding-bottom: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            header nav {
+                padding-top: 1.75rem !important; /* 28px */
+                padding-bottom: 1.75rem !important;
+            }
+        }
+        @media (max-width: 1023px) {
+            .mobile-menu {
+                display: block !important;
+            }
+            .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+                font-size: 1.25rem;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                margin-bottom: 0.4rem;
+                color: #0F5132;
+                background: #F5F5DC;
+                font-weight: 600;
+                transition: background 0.2s, color 0.2s;
+            }
+            .mobile-menu .flex-col a:hover, .mobile-menu .flex-col button:hover {
+                background: #0F5132;
+                color: #fff;
+            }
+            .mobile-menu .flex-col a:last-child, .mobile-menu .flex-col button:last-child {
+                margin-bottom: 0;
+            }
+            .mobile-menu .flex-col {
+                gap: 0.7rem !important;
+            }
+            .mobile-menu .p-6 {
+                padding: 2rem 1.2rem 1.2rem 1.2rem;
+            }
+            .mobile-menu .font-bold {
+                font-size: 1.5rem;
+            }
+            .mobile-menu {
+                width: 90vw;
+                max-width: 400px;
+                min-width: 220px;
+                background: #fff;
+                box-shadow: -2px 0 16px rgba(0,0,0,0.12);
+            }
+        }
+        /* Styles pour le bouton WhatsApp */
+        .whatsapp-button {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: pulse 2s infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .whatsapp-button:hover {
+            transform: scale(1.1);
+        }
+
+        .whatsapp-button i {
+            font-size: 32px;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .whatsapp-button {
+                width: 50px;
+                height: 50px;
+                bottom: 80px;
+                right: 20px;
+            }
+
+            .whatsapp-button i {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <nav class="container mx-auto px-4 py-2">
+            <div class="flex items-center justify-between min-h-[48px]">
+                <!-- Branding à gauche sur mobile, centré sur desktop -->
+                <div class="flex-1 flex items-center md:justify-center justify-start">
+                    <a href="/index.html" class="logo-text block text-2xl md:text-3xl font-extrabold text-black select-none" style="letter-spacing: 6px;">
+                        <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                    </a>
+                </div>
+                <!-- Menus à gauche (desktop uniquement) -->
+                <div class="hidden md:flex flex-1 items-center gap-10 md:gap-14 uppercase tracking-wider font-semibold text-base md:text-lg" style="letter-spacing: 2px;">
+                    <a href="/oumra.html" class="text-[#0F5132] nav-link">Oumra</a>
+                    <a href="/hajj.html" class="text-[#0F5132] nav-link">Hajj</a>
+                    <a href="/about.html" class="text-[#0F5132] nav-link">À propos</a>
+                    <a href="/blog.html" class="text-[#0F5132] nav-link">Blog</a>
+                </div>
+                <!-- Bouton Contact à droite (desktop uniquement) -->
+                <div class="hidden md:flex items-center flex-1 justify-end">
+                    <a href="/contact.html" class="bg-[#0F5132] text-white px-6 py-2 rounded-md hover:bg-[#0F5132]/90 transition-all duration-300 text-base font-semibold">
+                        Contact
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-[#0F5132] ml-2" id="mobile-menu-button" aria-label="Ouvrir le menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay md:hidden" id="menu-overlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-2xl font-bold text-[#0F5132]">Menu</span>
+                <button class="text-[#0F5132]" id="close-menu-button" aria-label="Fermer le menu">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <a href="/index.html" class="logo-text block text-xl font-extrabold text-black text-center mb-4" style="letter-spacing: 4px;">
+                    <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                </a>
+                <a href="/oumra.html">Oumra</a>
+                <a href="/hajj.html">Hajj</a>
+                <a href="/about.html">À propos</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="images/image_page_accueil.jpg" alt="Kaaba" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative container mx-auto px-4 flex flex-col items-center justify-center text-white text-center">
+            <!-- Arabic Title -->
+            <h1 class="text-4xl md:text-6xl font-arabic mb-4" data-aos="fade-up">
+                اللهم ارزقنا زيارة بيتك الحرام وزيارة نبيك
+            </h1>
+            
+            <!-- French Titles -->
+            <p class="text-2xl md:text-4xl mb-4" data-aos="fade-up" data-aos-delay="100">
+                « Ô Allah, accorde-nous la visite de Ta Maison
+            </p>
+            <p class="text-2xl md:text-4xl mb-8" data-aos="fade-up" data-aos-delay="200">
+                Sacrée et la visite de Ton Prophète. »
+            </p>
+
+            <!-- Type Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-8" data-aos="fade-up" data-aos-delay="400">
+                <div class="px-8 py-3 rounded-full bg-[#0F5132] text-white">
+                    Oumra
+                </div>
+                <div class="px-8 py-3 rounded-full bg-[#0F5132] text-white">
+                    Hajj
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How to Book Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Comment s'inscrire à Oumra et Hajj?</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Pour satisfaire les demandes des pèlerins, l'agence SIRA voyage propose trois options de réservation pour leur Hajj ou Oumra : 
+                    La réservation sur internet, La réservation en agence ou La réservation par correspondance.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Online Booking -->
+                <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-[#0F5132] rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-laptop text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Réservation en ligne</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-gray-700 leading-relaxed">
+                            Il est possible de réserver en ligne depuis un ordinateur, un smartphone ou une tablette, de manière simple, rapide et sécurisée.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            En ligne, vous pouvez sélectionner la formule qui vous convient et valider votre voyage Hajj ou Oumra.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Grâce à un système de paiement sécurisé, vous pouvez payer en toute sécurité. Vous pouvez régler l'intégralité de votre voyage en payant un acompte en ligne, en effectuant le reste de la somme en agence ou en effectuant un virement bancaire.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Agency Booking -->
+                <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-[#0F5132] rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-store text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Réservation en agence</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-gray-700 leading-relaxed">
+                            Nous accueillons nos clients dans notre agence pour planifier ensemble leur Hajj ou leur Oumra en tenant compte de leurs besoins, de leurs attentes et de leur budget.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Nous acceptons tous les modes de paiement en agence : espèces, chèque, carte bancaire, chèque vacances et virement bancaire.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Mail Booking -->
+                <div class="bg-white rounded-xl shadow-lg p-8 transform transition-all duration-300 hover:-translate-y-2">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 bg-[#0F5132] rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-envelope text-2xl text-white"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Réservation par correspondance</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <p class="text-gray-700 leading-relaxed">
+                            Si vous ne souhaitez pas réserver en ligne ou si vous ne pouvez pas venir dans notre agence, nous vous offrons la possibilité de vous inscrire par correspondance.
+                        </p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Pour cela, il vous suffit de nous envoyer un colis ou une Lettre Recommandée avec accusé de réception contenant :
+                        </p>
+                        <ul class="text-gray-700 leading-relaxed list-disc pl-5">
+                            <li>une copie de passeport</li>
+                            <li>un chèque bancaire de la somme que vous souhaitez payer (la totalité du séjour ou un acompte)</li>
+                            <li>les coordonnées complètes sur un papier libre (Adresse, email, numéro de téléphone)</li>
+                        </ul>
+                        <p class="text-gray-700 leading-relaxed">
+                            Dès que nous recevrons le courrier, nous allons créer le dossier, traiter la demande, procéder et confirmer la réservation.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Packages Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Nos Formules de Pèlerinage</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Découvrez nos formules adaptées à vos besoins pour un pèlerinage spirituel inoubliable
+                </p>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="flex justify-center space-x-4 mb-8">
+                <button class="filter-button bg-gray-800 text-white px-6 py-2 rounded-md" onclick="filterFormulas('all')">
+                    Toutes
+                </button>
+                <button class="filter-button text-gray-800 hover:text-[#B38F2E] px-6 py-2 rounded-md" onclick="filterFormulas('omra')">
+                    Oumra
+                </button>
+                <button class="filter-button text-gray-800 hover:text-[#B38F2E] px-6 py-2 rounded-md" onclick="filterFormulas('hajj')">
+                    Hajj
+                </button>
+            </div>
+
+            <!-- Packages Carousel -->
+            <div class="swiper packages-swiper">
+                <div class="swiper-wrapper" id="formulas-container">
+                    <!-- Les formules seront injectées ici dynamiquement -->
+                </div>
+                <div class="swiper-pagination mt-8"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Nos Services Premium</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Pour garantir un pèlerinage serein et mémorable, SIRA VOYAGE met à votre disposition une gamme complète de services : accompagnement personnalisé, transport de qualité, hébergement confortable et assistance continue tout au long de votre voyage.
+                </p>
+            </div>
+
+            <!-- Cards Container -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-flag text-4xl text-[#0F5132]"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Accompagnement de A à Z</h3>
+                    <p class="text-gray-600">Nous vous offrons un accompagnement complet de la préparation au retour</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-plane text-4xl text-[#0F5132]"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Compagnie aérienne prestigieuse</h3>
+                    <p class="text-gray-600">Voyagez avec : Saudi Airlines, Turkish Airlines, Emirates, Qatar Airways, etc</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-hotel text-4xl text-[#0F5132]"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Hôtels renommés</h3>
+                    <p class="text-gray-600">Hilton, Mövenpick, Sheraton, Fairmont, swissotel makkah, etc</p>
+                </div>
+
+                <!-- Card 4 -->
+                <div class="bg-white p-6 rounded-lg shadow-sm text-center" data-aos="fade-up" data-aos-delay="400">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                        <i class="fas fa-bus text-4xl text-[#0F5132]"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Transfert inclus</h3>
+                    <p class="text-gray-600">Bus confortables et climatisés pour tous les déplacements</p>
+                </div>
+            </div>
+
+            <!-- Navigation Dots -->
+            <div class="flex justify-center mt-8 space-x-2">
+                <div class="w-2 h-2 rounded-full bg-[#0F5132]"></div>
+                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages and Trust Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">Pourquoi Choisir SIRA VOYAGE ?</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto">
+                    Notre expertise et notre engagement envers l'excellence font de nous votre partenaire de confiance pour votre pèlerinage
+                </p>
+            </div>
+            
+            <!-- Trust Banner -->
+            <div class="bg-[#F5F5DC] py-12 rounded-lg">
+                <div class="flex flex-col md:flex-row justify-around items-center space-y-8 md:space-y-0">
+                    <div class="text-center">
+                        <i class="fas fa-star text-4xl text-green-800 mb-2"></i>
+                        <p class="text-green-800 font-semibold">13 ans d'expertise</p>
+                        <p class="text-gray-600 text-sm mt-2">Une longue expérience dans l'organisation de pèlerinages</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-smile text-4xl text-green-800 mb-2"></i>
+                        <p class="text-green-800 font-semibold">98% de satisfaction</p>
+                        <p class="text-gray-600 text-sm mt-2">Des pèlerins satisfaits et fidèles</p>
+                    </div>
+                    <div class="text-center">
+                        <i class="fas fa-shield-alt text-4xl text-green-800 mb-2"></i>
+                        <p class="text-green-800 font-semibold">Sécurité garantie</p>
+                        <p class="text-gray-600 text-sm mt-2">Un accompagnement sécurisé tout au long du voyage</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Prêt à Commencer Votre Pèlerinage ?</h2>
+                <p class="text-gray-600 mb-8 text-lg">
+                    Notre équipe d'experts est à votre disposition pour vous accompagner dans l'organisation de votre voyage spirituel. Contactez-nous dès maintenant pour un accompagnement personnalisé.
+                </p>
+                <a href="/contact.html" class="inline-block bg-[#0F5132] text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-[#0F5132]/90 hover:scale-105 transform transition-all duration-300 shadow-lg">
+                    Contactez-nous
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Media Bar -->
+    <div class="border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-snapchat"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold text-green-800 mb-4">Paris</h3>
+                    <p class="text-gray-600">123 Rue de la Paix</p>
+                    <p class="text-gray-600">75002 Paris, France</p>
+                    <p class="text-gray-600 mt-2">+33 1 23 45 67 89</p>
+                </div>
+
+                <!-- Logo and Description -->
+                <div class="text-center">
+                    <img src="images/Logo_Sira_Voyage.jpg" alt="SIRA VOYAGE" class="h-12 mx-auto mb-2">
+                    <p class="text-gray-600 uppercase text-sm mb-4">HAJJ OMRA & TOURISME ÉTHIQUE</p>
+                    <p class="text-gray-600">Lun - Ven: 9h - 18h</p>
+                    <p class="text-gray-600">contact@siravoyage.com</p>
+                </div>
+
+                <!-- Links and Payment -->
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <a href="/about.html" class="text-gray-600 hover:text-green-800">A propos</a>
+                        <a href="/info-pratiques.html" class="text-gray-600 hover:text-green-800">Info pratiques</a>
+                        <a href="/conditions-de-vente.html" class="text-gray-600 hover:text-green-800">Conditions de vente</a>
+                        <a href="/faqs.html" class="text-gray-600 hover:text-green-800">FAQs</a>
+                        <a href="/blog.html" class="text-gray-600 hover:text-green-800">Blog</a>
+                        <a href="/contact.html" class="text-gray-600 hover:text-green-800">Contact</a>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <img src="images/paypal.png" alt="PayPal" class="h-8">
+                        <img src="images/stripe.png" alt="Stripe" class="h-8">
+                        <img src="images/visa.png" alt="Visa" class="h-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/22595031843?text=Bonjour%20SIRA%20VOYAGE%2C%20je%20souhaite%20obtenir%20des%20informations%20sur%20vos%20services%20de%20Hajj%20et%20Oumra." 
+       class="whatsapp-button" 
+       target="_blank" 
+       rel="noopener noreferrer">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Tableau des images disponibles
+        const availableImages = ['1', '2', '3', '4', '5', '6', '9', '10', 'medina3'];
+
+        // Fonction pour obtenir une image aléatoire
+        function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * availableImages.length);
+            return availableImages[randomIndex];
+        }
+
+        // Fonction pour formater la date
+        function formatDate(dateString) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+
+        // Initialisation du Swiper
+        const packagesSwiper = new Swiper('.packages-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+
+        // Variable pour stocker toutes les formules
+        let allFormulas = [];
+
+        // Liste des formules à exclure
+        const excludedFormulas = [
+            'ITHRAA AL KHAIR 119',
+            'ITHRAA AL KHAIR 117',
+            'ITHRAA AL KHAIR 111'
+        ];
+
+        // Fonction pour filtrer les formules
+        function filterFormulas(type) {
+            // Mettre à jour les styles des boutons
+            const buttons = document.querySelectorAll('.filter-button');
+            buttons.forEach(button => {
+                if (button.getAttribute('onclick').includes(type)) {
+                    button.classList.add('bg-gray-800', 'text-white');
+                    button.classList.remove('text-gray-800', 'hover:text-[#B38F2E]');
+                } else {
+                    button.classList.remove('bg-gray-800', 'text-white');
+                    button.classList.add('text-gray-800', 'hover:text-[#B38F2E]');
+                }
+            });
+
+            // Filtrer les formules en fonction du type
+            let filteredFormulas = allFormulas.filter(formula => {
+                // Vérifier si la formule doit être exclue
+                if (excludedFormulas.includes(formula.name)) {
+                    return false;
+                }
+
+                // Appliquer le filtre de type
+                if (type === 'all') {
+                    return true;
+                } else if (type === 'omra') {
+                    return formula.tripType === 'Oumra';
+                } else if (type === 'hajj') {
+                    return formula.tripType === 'Hajj';
+                }
+                return true;
+            });
+
+            // Mettre à jour le conteneur des formules
+            const container = document.getElementById('formulas-container');
+            container.innerHTML = filteredFormulas.map(formula => createFormulaCard(formula)).join('');
+
+            // Mettre à jour le Swiper
+            packagesSwiper.update();
+        }
+
+        // Fonction pour créer une carte de formule
+        function createFormulaCard(formula) {
+            // Vérifier si la formule doit être exclue
+            if (excludedFormulas.includes(formula.name)) {
+                return '';
+            }
+
+            const formulaType = formula.tripType === 'Oumra' ? 'omra' : 'hajj';
+            
+            return `
+                <div class="swiper-slide">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="images/${getRandomImage()}.jpg" alt="${formula.name}" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm">
+                                Durée ${formula.duration} jours
+                            </div>
+                            <div class="absolute bottom-4 right-4 bg-[#B38F2E] text-white px-3 py-1 rounded-full text-sm">
+                                ${formatDate(formula.departureDate)}
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-800">${formula.name}</h3>
+                                    <p class="text-gray-600">${formula.formula}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500">à partir de</p>
+                                    <span class="text-[#B38F2E] font-bold text-xl">${formula.price} FCFA</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-[#0F5132] text-white py-3 rounded-md hover:bg-[#0F5132]/90 hover:scale-[1.02] hover:shadow-lg transform transition-all duration-300 ease-in-out" 
+                                    onclick="window.location.href='/formula-details.html?id=${formula.id}&type=${formulaType}'">
+                                Réserver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fonction pour afficher les formules
+        function displayFormulas(formulas) {
+            const container = document.getElementById('formulas-container');
+            container.innerHTML = formulas.map(formula => createFormulaCard(formula)).join('');
+            packagesSwiper.update();
+            packagesSwiper.slideTo(0);
+        }
+
+        // Initialisation du Swiper pour les meilleures formules
+        const bestPackagesSwiper = new Swiper('.best-packages-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+
+        // Fonction pour créer une carte de formule premium
+        function createBestFormulaCard(formula) {
+            const formulaClass = formula.price >= 1490 ? 'Formule Confort' : 'Formule Essentielle';
+            
+            return `
+                <div class="swiper-slide">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="images/${getRandomImage()}.jpg" alt="${formula.name}" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm">
+                                Durée ${formula.duration} jours
+                            </div>
+                            <div class="absolute bottom-4 right-4 bg-[#B38F2E] text-white px-3 py-1 rounded-full text-sm">
+                                ${formatDate(formula.departureDate)}
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-800">${formula.name}</h3>
+                                    <p class="text-gray-600">${formulaClass}</p>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500">à partir de</p>
+                                    <span class="text-[#B38F2E] font-bold text-xl">${formula.price} FCFA</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-[#0F5132] text-white py-3 rounded-md hover:bg-[#0F5132]/90 hover:scale-[1.02] hover:shadow-lg transform transition-all duration-300 ease-in-out" 
+                                    onclick="window.location.href='/formula-details.html?id=${formula.id}&type=${formula.tripType.toLowerCase().replace(' ', '_')}'">
+                                Réserver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Fonction pour afficher les meilleures formules
+        function displayBestFormulas(formulas) {
+            const container = document.getElementById('best-formulas-container');
+            container.innerHTML = formulas.map(formula => createBestFormulaCard(formula)).join('');
+            bestPackagesSwiper.update();
+            bestPackagesSwiper.slideTo(0);
+        }
+
+        // Modifier la fonction loadFormulas
+        async function loadFormulas() {
+            try {
+                const response = await fetch('/api/formulas');
+                allFormulas = await response.json();
+                console.log('Formules chargées:', allFormulas); // Pour le débogage
+                displayFormulas(allFormulas);
+                filterFormulas('all');
+            } catch (error) {
+                console.error('Erreur lors du chargement des formules:', error);
+            }
+        }
+
+        // Charger les formules au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFormulas();
+            // Activer le filtre "Toutes" par défaut
+            filterFormulas('all');
+        });
+
+        // Script pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            closeMenuButton.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+        });
+
+        const rates = {
+            individual: 4990.00,
+            double: 4990.00,
+            triple: 4990.00,
+            quadruple: 4990.00,
+            baby: 350.00,
+            childDiscount: 150.00
+        };
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>

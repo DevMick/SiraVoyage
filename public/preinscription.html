@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Préinscription - SIRA VOYAGE</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tailwind & Custom CSS -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 700;
+        }
+        .logo-img {
+            height: 5rem; /* 64px pour mobile */
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 5rem; /* 128px pour desktop */
+            }
+        }
+        .nav-link {
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            background-color: #0F5132;
+            transition: all 0.3s ease-in-out;
+            transform: translateX(-50%);
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 80%;
+            max-width: 400px;
+            background: white;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .reservation-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .stepper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            position: relative;
+        }
+
+        .step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step.active {
+            background: #0F5132;
+            color: white;
+        }
+
+        .step.completed {
+            background: #0F5132;
+            color: white;
+        }
+
+        .step-line {
+            position: absolute;
+            height: 2px;
+            background: #f3f4f6;
+            width: calc(100% - 80px);
+            top: 50%;
+            left: 40px;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .step-progress {
+            position: absolute;
+            height: 2px;
+            background: #0F5132;
+            width: 0%;
+            top: 50%;
+            left: 40px;
+            transform: translateY(-50%);
+            z-index: 1;
+            transition: width 0.3s ease;
+            max-width: calc(100% - 80px);
+        }
+
+        .form-step {
+            display: none;
+            padding: 20px;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid #0F5132;
+            background: white;
+            color: #0F5132;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: #0F5132;
+            color: white;
+        }
+
+        .form-buttons {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #0F5132;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #0F5132/90;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .floating-label-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .floating-label-input {
+            width: 100%;
+            height: 50px;
+            padding: 0 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .floating-label {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 0 5px;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .floating-label-input:focus + .floating-label,
+        .floating-label-input:not(:placeholder-shown) + .floating-label {
+            top: 0;
+            font-size: 12px;
+            color: #0F5132;
+        }
+
+        .floating-label-input:focus {
+            border-color: #0F5132;
+        }
+
+        .edit-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #0F5132;
+            cursor: pointer;
+        }
+
+        .reservation-details {
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            color: #6b7280;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        @media (max-width: 500px) {
+            .cta-btn-mobile {
+                width: 100% !important;
+                display: block;
+                text-align: center !important;
+                padding: 14px 0 !important;
+                font-size: 1rem !important;
+                margin-top: 12px !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <nav class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <img src="images/Logo_Sira_Voyage.jpg" alt="SIRA VOYAGE" class="logo-img">
+                </div>
+
+                <!-- Center Menu (Desktop) -->
+                <div class="hidden md:flex items-center gap-8">
+                    <a href="/index.html" class="text-[#0F5132] hover:text-[#0F5132] text-lg nav-link transition-all duration-300">Accueil</a>
+                    <a href="/oumra.html" class="text-[#0F5132] hover:text-[#0F5132] text-lg nav-link transition-all duration-300">Oumra</a>
+                    <a href="/hajj.html" class="text-[#0F5132] hover:text-[#0F5132] text-lg nav-link transition-all duration-300">Hajj</a>
+                    <a href="/about.html" class="text-[#0F5132] hover:text-[#0F5132] text-lg nav-link transition-all duration-300">À propos</a>
+                    <a href="/blog.html" class="text-[#0F5132] hover:text-[#0F5132] text-lg nav-link transition-all duration-300">Blog</a>
+                </div>
+
+                <!-- Right Side (Desktop) -->
+                <div class="hidden md:flex items-center">
+                    <a href="/contact.html" class="bg-[#0F5132] text-white px-8 py-3 rounded-md hover:bg-[#0F5132]/90 transition-all duration-300 text-lg">
+                        Contact
+                    </a>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-[#0F5132]" id="mobile-menu-button">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay md:hidden" id="menu-overlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-8">
+                <span class="text-2xl font-bold text-[#0F5132]">Menu</span>
+                <button class="text-[#0F5132]" id="close-menu-button">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col space-y-6">
+                <a href="/index.html" class="text-[#0F5132] text-lg hover:bg-[#0F5132]/10 px-4 py-3 rounded-md transition-all duration-300">Accueil</a>
+                <a href="/oumra.html" class="text-[#0F5132] text-lg hover:bg-[#0F5132]/10 px-4 py-3 rounded-md transition-all duration-300">Oumra</a>
+                <a href="/hajj.html" class="text-[#0F5132] text-lg hover:bg-[#0F5132]/10 px-4 py-3 rounded-md transition-all duration-300">Hajj</a>
+                <a href="/about.html" class="text-[#0F5132] text-lg hover:bg-[#0F5132]/10 px-4 py-3 rounded-md transition-all duration-300">À propos</a>
+                <a href="/blog.html" class="text-[#0F5132] text-lg hover:bg-[#0F5132]/10 px-4 py-3 rounded-md transition-all duration-300">Blog</a>
+                <a href="/contact.html" class="text-[#0F5132] text-lg hover:bg-[#0F5132]/90 transition-all duration-300 text-lg w-full mt-4">
+                    Contact
+                </a>
+            </div>
+        </div>
+    </div>
+<!-- Hero Section -->
+<section class="pt-32 pb-16 bg-gray-50">
+    <div class="container mx-auto px-12">
+        <p class="text-xl text-gray-600 text-center max-w-3xl mx-auto">
+            Découvrez nos articles et actualités sur la Omra
+        </p>
+    </div>
+</section>
+    <!-- Main Content -->
+    <main class="min-h-screen flex flex-col pt-32">
+       
+        <div class="container mx-auto px-4 py-8">
+            <div class="reservation-card">
+                <div class="flex justify-between items-center p-4 border-b">
+                    <h2 class="text-2xl font-semibold">Réservation</h2>
+                </div>
+
+                <!-- Stepper -->
+                <div class="stepper">
+                    <div class="step-line"></div>
+                    <div class="step-progress"></div>
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                    <div class="step" data-step="4">4</div>
+                </div>
+
+                <!-- Step 1: Type d'hébergement -->
+                <div class="form-step active" id="step1">
+                    <h3 class="text-xl font-semibold mb-6">Type d'hébergement</h3>
+                    <p class="text-gray-600 mb-6 text-center">Veuillez choisir votre type d'hébergement parmi les options ci-dessous</p>
+                    <div class="space-y-4" id="room-types-container">
+                        <!-- Les options seront injectées ici dynamiquement -->
+                        </div>
+                    <div id="room-selection-error" class="hidden mt-4">
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Attention!</strong>
+                            <span class="block sm:inline">Veuillez sélectionner au moins un type d'hébergement avant de continuer.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Détails de réservation -->
+                <div class="form-step" id="step2">
+                    <h3 class="text-xl font-semibold mb-6">Les détails de votre réservation</h3>
+
+                    <div class="reservation-details">
+                        <div class="grid grid-cols-2 gap-6">
+                            <!-- Première colonne -->
+                            <div class="space-y-6">
+                                <div class="detail-row items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-plane-arrival text-[#0F5132] mr-3"></i>
+                        <div>
+                                            <span class="block font-semibold">Arrivée</span>
+                                            <span class="text-sm text-gray-500" id="arrival-date">Chargement...</span>
+                        </div>
+                        </div>
+                    </div>
+                                <div class="detail-row items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-[#0F5132] mr-3"></i>
+                        <div>
+                                            <span class="block font-semibold">Durée totale du séjour</span>
+                                            <span class="text-sm text-gray-500" id="duration-total">Chargement...</span>
+                        </div>
+                        </div>
+                    </div>
+                                <div class="detail-row items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-umbrella-beach text-[#0F5132] mr-3"></i>
+                        <div>
+                                            <span class="block font-semibold">Type de Voyage</span>
+                                            <span class="text-sm text-gray-500" id="trip-type">Chargement...</span>
+                        </div>
+                                    </div>
+                        </div>
+                    </div>
+
+                            <!-- Deuxième colonne -->
+                            <div class="space-y-6">
+                                <div class="detail-row items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-plane-departure text-[#0F5132] mr-3"></i>
+                        <div>
+                                            <span class="block font-semibold">Départ</span>
+                                            <span class="text-sm text-gray-500" id="departure-date">Chargement...</span>
+                        </div>
+                        </div>
+                    </div>
+                        <div class="detail-row items-center">
+                            <div class="flex items-center">
+                                        <i class="fas fa-tag text-[#0F5132] mr-3"></i>
+                                <div>
+                                            <span class="block font-semibold">Formule</span>
+                                            <span class="text-sm text-gray-500" id="formula-type">Chargement...</span>
+                                </div>
+                            </div>
+                        </div>
+                                <div class="detail-row items-center">
+                            <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt text-[#0F5132] mr-3"></i>
+                                <div>
+                                            <span class="block font-semibold">Ville de départ</span>
+                                            <span class="text-sm text-gray-500" id="departure-city">Chargement...</span>
+                                </div>
+                            </div>
+                        </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reservation-details">
+                        <h4 class="font-semibold mb-4">Vous avez sélectionné</h4>
+                        <div id="selected-rooms" class="space-y-2 mb-4">
+                            <!-- Les chambres sélectionnées seront affichées ici -->
+                        </div>
+                        <div class="detail-row font-semibold">
+                            <span>Montant total</span>
+                            <span id="total-amount">0 FCFA</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-4">Des frais supplémentaires peuvent s'appliquer</p>
+                    </div>
+                </div>
+
+                <!-- Step 3: Informations personnelles -->
+                <div class="form-step" id="step3">
+                    <h3 class="text-xl font-semibold mb-6">Détails</h3>
+
+                    <div class="floating-label-group">
+                        <input type="text" class="floating-label-input" id="fullname" placeholder=" ">
+                        <label class="floating-label">Nom & Prénom</label>
+                        <i class="fas fa-pen edit-icon"></i>
+                    </div>
+
+                    <div class="floating-label-group">
+                        <input type="text" class="floating-label-input" id="address" placeholder=" ">
+                        <label class="floating-label">Adresse</label>
+                        <i class="fas fa-pen edit-icon"></i>
+                    </div>
+
+                    <div class="floating-label-group">
+                        <input type="tel" class="floating-label-input" id="phone" placeholder=" ">
+                        <label class="floating-label">Numéro de téléphone</label>
+                        <i class="fas fa-pen edit-icon"></i>
+                    </div>
+
+                    <div class="floating-label-group">
+                        <input type="email" class="floating-label-input" id="email" placeholder=" ">
+                        <label class="floating-label">E-mail</label>
+                        <i class="fas fa-pen edit-icon"></i>
+                    </div>
+
+                    <div id="form-validation-error" class="hidden mt-4">
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Attention!</strong>
+                            <span class="block sm:inline">Veuillez remplir tous les champs correctement avant de continuer.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Paiement -->
+                <div class="form-step" id="step4">
+                    <h3 class="text-xl font-semibold mb-6">Paiement</h3>
+                    
+                    <div class="reservation-details mb-6">
+                        <h4 class="font-semibold mb-4">Récapitulatif de votre réservation</h4>
+                        <div id="payment-selected-rooms" class="space-y-2 mb-4">
+                            <!-- Les chambres sélectionnées seront affichées ici -->
+                        </div>
+                        <div class="detail-row font-semibold">
+                            <span>Montant total</span>
+                            <span id="payment-total-amount">0 FCFA</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group payment-options">
+                        <label class="block font-semibold mb-4">Options de paiement</label>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <input type="radio" id="fullPayment" name="paymentOption" value="full" class="w-5 h-5 text-[#0F5132] border-gray-300 focus:ring-[#0F5132]" required>
+                                <label for="fullPayment" class="ml-3">
+                                    <span class="block font-medium">Paiement en totalité</span>
+                                    <span class="text-sm text-gray-500">Payez la totalité du montant maintenant</span>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="partialPayment" name="paymentOption" value="partial" class="w-5 h-5 text-[#0F5132] border-gray-300 focus:ring-[#0F5132]" required>
+                                <label for="partialPayment" class="ml-3">
+                                    <span class="block font-medium">Acompte de 30%</span>
+                                    <span class="text-sm text-gray-500">Payez 30% maintenant et le reste avant le départ</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Form Navigation Buttons -->
+                <div class="form-buttons">
+                    <button class="btn btn-secondary" id="prevBtn" style="display: none;">PRÉCÉDENT</button>
+                    <button class="btn btn-primary" id="nextBtn">SUIVANT</button>
+                    <button class="btn btn-primary" id="saveFormBtn" style="display: none;">ENREGISTRER LE FORMULAIRE</button>
+                    <button class="btn btn-primary" id="payButton" style="display: none;">PROCÉDER AU PAIEMENT</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Social Media Bar -->
+    <div class="border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-snapchat"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold text-green-800 mb-4">Paris</h3>
+                    <p class="text-gray-600">123 Rue de la Paix</p>
+                    <p class="text-gray-600">75002 Paris, France</p>
+                    <p class="text-gray-600 mt-2">+33 1 23 45 67 89</p>
+                </div>
+
+                <!-- Logo and Description -->
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-800 mb-2">SIRA VOYAGE</div>
+                    <p class="text-gray-600 uppercase text-sm mb-4">HAJJ OMRA & TOURISME ÉTHIQUE</p>
+                    <p class="text-gray-600">Lun - Ven: 9h - 18h</p>
+                    <p class="text-gray-600">contact@siravoyage.com</p>
+                </div>
+
+                <!-- Links and Payment -->
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <a href="/about.html" class="text-gray-600 hover:text-green-800">A propos</a>
+                        <a href="/info-pratiques.html" class="text-gray-600 hover:text-green-800">Info pratiques</a>
+                        <a href="/conditions-de-vente.html" class="text-gray-600 hover:text-green-800">Conditions de vente</a>
+                        <a href="/faqs.html" class="text-gray-600 hover:text-green-800">FAQs</a>
+                        <a href="/blog.html" class="text-gray-600 hover:text-green-800">Blog</a>
+                        <a href="/contact.html" class="text-gray-600 hover:text-green-800">Contact</a>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <img src="images/paypal.png" alt="PayPal" class="h-8">
+                        <img src="images/stripe.png" alt="Stripe" class="h-8">
+                        <img src="images/visa.png" alt="Visa" class="h-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Call Button -->
+    <button class="fixed bottom-8 right-8 bg-green-800 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 transition-all duration-300">
+        <i class="fas fa-phone"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.cinetpay.com/seamless/main.js"></script>
+    <script>
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Variable pour suivre l'état de validation du formulaire
+        let isFormValidated = false;
+
+        // Fonction pour formater le prix
+        function formatPrice(price) {
+            return price.toLocaleString('fr-FR') + ' FCFA';
+        }
+
+        // Fonction pour créer une option de chambre
+        function createRoomOption(type, label, description, price) {
+            return `
+                <div class="flex items-center justify-between p-4 border rounded-lg hover:border-[#0F5132] transition-all duration-300">
+                    <div class="flex items-center gap-4">
+                        <input type="checkbox" name="roomType" id="${type}" value="${type}" class="w-8 h-8 text-[#0F5132] border-gray-300 rounded focus:ring-[#0F5132] cursor-pointer transform scale-110">
+                        <label for="${type}" class="flex flex-col">
+                            <span class="block font-medium text-lg">${label}</span>
+                            <span class="text-sm text-gray-500">${description}</span>
+                        </label>
+                    </div>
+                    <span class="text-lg font-semibold text-[#0F5132]">${formatPrice(price)}</span>
+                </div>
+            `;
+        }
+
+        // Fonction pour charger les tarifs depuis l'API
+        async function loadRoomPrices() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const formulaId = urlParams.get('id');
+                
+                if (!formulaId) {
+                    console.error('Aucun ID de formule trouvé dans l\'URL');
+                    return;
+                }
+
+                const response = await fetch(`/api/formulas/${formulaId}`);
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+                const formula = await response.json();
+                console.log('Données de la formule reçues:', formula);
+
+                const container = document.getElementById('room-types-container');
+                if (!container) return;
+
+                // Créer les options de chambre avec les tarifs de la formule
+                const roomOptions = [
+                    {
+                        type: 'single',
+                        label: 'Chambre individuelle',
+                        description: 'Pour une personne',
+                        price: formula.tarifs.individuelle
+                    },
+                    {
+                        type: 'double',
+                        label: 'Chambre double',
+                        description: 'Pour deux personnes',
+                        price: formula.tarifs.double
+                    },
+                    {
+                        type: 'triple',
+                        label: 'Chambre triple',
+                        description: 'Pour trois personnes',
+                        price: formula.tarifs.triple
+                    },
+                    {
+                        type: 'quad',
+                        label: 'Chambre quadruple',
+                        description: 'Pour quatre personnes',
+                        price: formula.tarifs.quadruple
+                    }
+                ];
+
+                // Injecter les options dans le conteneur
+                container.innerHTML = roomOptions.map(option => 
+                    createRoomOption(option.type, option.label, option.description, option.price)
+                ).join('');
+
+                // Ajouter les écouteurs d'événements pour les boutons radio
+                document.querySelectorAll('input[name="roomType"]').forEach(radio => {
+                    radio.addEventListener('change', updateTotalPrice);
+                });
+
+            } catch (error) {
+                console.error('Erreur lors du chargement des tarifs:', error);
+                const container = document.getElementById('room-types-container');
+                if (container) {
+                    container.innerHTML = `
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                            <strong class="font-bold">Erreur!</strong>
+                            <span class="block sm:inline">Impossible de charger les tarifs. Veuillez réessayer plus tard.</span>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function updateTotalPrice() {
+            const selectedRoomTypes = document.querySelectorAll('input[name="roomType"]:checked');
+            const selectedRoomsContainer = document.getElementById('selected-rooms');
+            const totalAmountElement = document.getElementById('total-amount');
+            
+            if (selectedRoomsContainer && totalAmountElement) {
+                // Vider le conteneur des chambres sélectionnées
+                selectedRoomsContainer.innerHTML = '';
+                
+                if (selectedRoomTypes.length === 0) {
+                    totalAmountElement.textContent = '0 FCFA';
+                    return;
+                }
+
+                let totalPrice = 0;
+                selectedRoomTypes.forEach(checkbox => {
+                    const roomLabel = checkbox.nextElementSibling.querySelector('.block').textContent;
+                    const priceText = checkbox.parentElement.nextElementSibling.textContent;
+                    const price = parseInt(priceText.replace(/\s+/g, '').replace('FCFA', ''));
+                    totalPrice += price;
+
+                    // Ajouter la chambre sélectionnée à la liste
+                    const roomElement = document.createElement('div');
+                    roomElement.className = 'flex justify-between items-center text-sm';
+                    roomElement.innerHTML = `
+                        <span>${roomLabel}</span>
+                        <span class="text-[#0F5132]">${priceText}</span>
+                    `;
+                    selectedRoomsContainer.appendChild(roomElement);
+                });
+
+                totalAmountElement.textContent = formatPrice(totalPrice);
+            }
+        }
+
+        // Charger les tarifs au chargement de la page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadRoomPrices();
+        });
+
+        function updateStepProgress() {
+            // Calcul ajusté pour que la barre s'arrête exactement à la dernière étape
+            const progress = ((currentStep - 1) / (totalSteps - 1)) * 100;
+            const progressBar = document.querySelector('.step-progress');
+            const maxWidth = document.querySelector('.step-line').offsetWidth;
+            
+            // Calculer la largeur exacte pour s'arrêter au dernier point
+            const finalWidth = Math.min(progress, 100) * (maxWidth / 100);
+            progressBar.style.width = `${finalWidth}px`;
+
+            // Update step indicators
+            document.querySelectorAll('.step').forEach((step, index) => {
+                const stepNum = index + 1;
+                step.classList.remove('active', 'completed');
+                if (stepNum === currentStep) {
+                    step.classList.add('active');
+                } else if (stepNum < currentStep) {
+                    step.classList.add('completed');
+                }
+            });
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const saveFormBtn = document.getElementById('saveFormBtn');
+            const payBtn = document.getElementById('payButton');
+
+            prevBtn.style.display = step === 1 ? 'none' : 'block';
+            nextBtn.style.display = step === totalSteps ? 'none' : 'block';
+            saveFormBtn.style.display = step === 3 ? 'block' : 'none';
+            payBtn.style.display = (step === totalSteps && isFormValidated) ? 'block' : 'none';
+
+            if (step === 4) {
+                updatePaymentDetails();
+            }
+
+            updateStepProgress();
+        }
+
+        function validateStep1() {
+            const selectedRooms = document.querySelectorAll('input[name="roomType"]:checked');
+            const errorElement = document.getElementById('room-selection-error');
+            
+            if (selectedRooms.length === 0) {
+                errorElement.classList.remove('hidden');
+                return false;
+            }
+            
+            errorElement.classList.add('hidden');
+            return true;
+        }
+
+        // Fonction pour valider et enregistrer le formulaire
+        async function validateAndSaveForm() {
+            if (!validateStep3()) {
+                document.getElementById('form-validation-error').classList.remove('hidden');
+                return;
+            }
+
+            document.getElementById('form-validation-error').classList.add('hidden');
+
+            // Collecter les données du formulaire
+            const formData = new FormData();
+            
+            // Étape 1: Type d'hébergement
+            const selectedRooms = document.querySelectorAll('input[name="roomType"]:checked');
+            const roomTypes = Array.from(selectedRooms).map(room => ({
+                type: room.value,
+                label: room.nextElementSibling.querySelector('.block').textContent,
+                price: room.parentElement.nextElementSibling.textContent
+            }));
+            formData.append('roomTypes', JSON.stringify(roomTypes));
+
+            // Étape 2: Détails de réservation
+            const arrivalDate = document.getElementById('arrival-date').textContent;
+            const departureDate = document.getElementById('departure-date').textContent;
+            const duration = document.getElementById('duration-total').textContent;
+            const formulaType = document.getElementById('formula-type').textContent;
+            const tripType = document.getElementById('trip-type').textContent;
+            const departureCity = document.getElementById('departure-city').textContent;
+
+            formData.append('arrivalDate', arrivalDate);
+            formData.append('departureDate', departureDate);
+            formData.append('duration', duration);
+            formData.append('formulaType', formulaType);
+            formData.append('tripType', tripType);
+            formData.append('departureCity', departureCity);
+
+            // Étape 3: Informations personnelles
+            formData.append('fullname', document.getElementById('fullname').value);
+            formData.append('address', document.getElementById('address').value);
+            formData.append('phone', document.getElementById('phone').value);
+            formData.append('email', document.getElementById('email').value);
+
+            // Afficher l'animation de chargement
+            Swal.fire({
+                title: 'Enregistrement en cours...',
+                text: 'Veuillez patienter pendant que nous enregistrons vos informations',
+                allowOutsideClick: false,
+                showConfirmButton: false,
+                willOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            try {
+                const response = await fetch('https://script.google.com/macros/s/AKfycbwc6z3ueUpZDpe1oX11DPKjf2c_nJFeTgWhJyKs2lD99xEqf1TeD2Pnwp1zh2T_yAuqgg/exec', {
+                    method: 'POST',
+                    body: formData,
+                    mode: 'no-cors'
+                });
+
+                isFormValidated = true;
+                
+                Swal.fire({
+                    title: 'Formulaire enregistré avec succès !',
+                    html: `
+                        <div style="padding: 20px; background: #f7f9fc; border-radius: 5px; margin-bottom: 20px;">
+                            <div style="font-size: 18px; font-weight: bold; color: #0F5132; margin-bottom: 15px;">
+                                Vos informations ont été enregistrées
+                            </div>
+                            <div style="color: #666; line-height: 1.5;">
+                                Un email de confirmation a été envoyé à votre adresse email.<br>
+                                Vous pouvez maintenant procéder au paiement.
+                            </div>
+                        </div>
+                    `,
+                    icon: 'success',
+                    confirmButtonColor: '#0F5132'
+                }).then(() => {
+                    currentStep = 4;
+                showStep(currentStep);
+                });
+
+            } catch (error) {
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur est survenue lors de l\'enregistrement de vos informations. Veuillez réessayer.',
+                    icon: 'error',
+                    confirmButtonColor: '#0F5132'
+                });
+            }
+        }
+
+        // Fonction pour valider l'étape 3
+        function validateStep3() {
+            let isValid = true;
+            const errorMessages = {
+                fullname: 'Veuillez entrer votre nom complet',
+                address: 'Veuillez entrer votre adresse',
+                phone: 'Veuillez entrer un numéro de téléphone valide',
+                email: 'Veuillez entrer une adresse email valide'
+            };
+
+            // Réinitialiser les styles d'erreur
+            document.querySelectorAll('.input-box input').forEach(input => {
+                input.classList.remove('border-red-500');
+                const errorElement = input.nextElementSibling;
+                if (errorElement && errorElement.classList.contains('error-message')) {
+                    errorElement.remove();
+                }
+            });
+
+            // Validation du nom complet
+            const fullname = document.getElementById('fullname');
+            if (!fullname.value.trim()) {
+                showError(fullname, errorMessages.fullname);
+                isValid = false;
+            }
+
+            // Validation de l'adresse
+            const address = document.getElementById('address');
+            if (!address.value.trim()) {
+                showError(address, errorMessages.address);
+                isValid = false;
+            }
+
+            // Validation du téléphone
+            const phone = document.getElementById('phone');
+            const phoneRegex = /^(\+225|00225)?[0-9]{10}$/;
+            if (!phoneRegex.test(phone.value.replace(/\s+/g, ''))) {
+                showError(phone, errorMessages.phone);
+                isValid = false;
+            }
+
+            // Validation de l'email
+            const email = document.getElementById('email');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email.value)) {
+                showError(email, errorMessages.email);
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        function showError(input, message) {
+            input.classList.add('border-red-500');
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error-message text-red-500 text-sm mt-1';
+            errorDiv.textContent = message;
+            input.parentNode.insertBefore(errorDiv, input.nextSibling);
+        }
+
+        // Modification de l'écouteur d'événements pour le bouton suivant
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            if (currentStep === 1 && !validateStep1()) {
+                return;
+            }
+            
+            if (currentStep === 3 && !isFormValidated) {
+                Swal.fire({
+                    title: 'Validation requise',
+                    text: 'Veuillez d\'abord enregistrer le formulaire avant de continuer.',
+                    icon: 'warning',
+                    confirmButtonColor: '#0F5132'
+                });
+                return;
+            }
+            
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+
+        // Fonction pour charger les détails de la formule
+        async function loadFormulaDetails() {
+            try {
+                console.log('Chargement des détails de la formule dans preinscription.html...');
+                const urlParams = new URLSearchParams(window.location.search);
+                const formulaId = urlParams.get('id');
+                console.log('ID de la formule récupéré:', formulaId);
+                
+                if (!formulaId) {
+                    console.error('Aucun ID de formule trouvé dans l\'URL');
+                    return;
+                }
+
+                console.log('Appel à l\'API avec l\'ID:', formulaId);
+                const response = await fetch(`/api/formulas/${formulaId}`);
+                
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP: ${response.status}`);
+                }
+                
+                const formula = await response.json();
+                console.log('Données reçues de l\'API:', formula);
+
+                // Mettre à jour les dates et la durée
+                const arrivalDateElement = document.getElementById('arrival-date');
+                const departureDateElement = document.getElementById('departure-date');
+                const durationElement = document.getElementById('duration-total');
+                const formulaTypeElement = document.getElementById('formula-type');
+                const tripTypeElement = document.getElementById('trip-type');
+                const departureCityElement = document.getElementById('departure-city');
+
+                // Fonction pour formater les dates
+                const formatDate = (dateStr) => {
+                    const date = new Date(dateStr);
+                    const days = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
+                    const day = days[date.getDay()];
+                    return `${day} ${date.getDate().toString().padStart(2, '0')}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getFullYear()}`;
+                };
+
+                if (arrivalDateElement && formula.departureDate) {
+                    arrivalDateElement.textContent = formatDate(formula.departureDate);
+                } else {
+                    console.error('Élément arrival-date non trouvé ou date de départ manquante');
+                }
+
+                if (departureDateElement && formula.returnDate) {
+                    departureDateElement.textContent = formatDate(formula.returnDate);
+                } else {
+                    console.error('Élément departure-date non trouvé ou date de retour manquante');
+                }
+
+                if (durationElement && formula.duration) {
+                    durationElement.textContent = `${formula.duration} Jours`;
+                } else {
+                    console.error('Élément duration-total non trouvé ou durée manquante');
+                }
+
+                if (formulaTypeElement && formula.formula) {
+                    formulaTypeElement.textContent = formula.formula;
+                }
+
+                if (tripTypeElement && formula.tripType) {
+                    tripTypeElement.textContent = formula.tripType;
+                }
+
+                if (departureCityElement && formula.departureCity) {
+                    departureCityElement.textContent = formula.departureCity;
+                }
+
+                console.log('Mise à jour terminée avec succès');
+
+            } catch (error) {
+                console.error('Erreur détaillée lors du chargement des détails de la formule:', error);
+                console.error('Stack trace:', error.stack);
+                
+                // Afficher un message d'erreur à l'utilisateur
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative';
+                errorMessage.role = 'alert';
+                errorMessage.innerHTML = `
+                    <strong class="font-bold">Erreur!</strong>
+                    <span class="block sm:inline">Impossible de charger les détails de la formule. Veuillez réessayer plus tard.</span>
+                `;
+                
+                const container = document.querySelector('.reservation-card');
+                if (container) {
+                    container.insertBefore(errorMessage, container.firstChild);
+                }
+            }
+        }
+
+        // Appeler la fonction au chargement de la page
+        console.log('Initialisation de la page preinscription.html');
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM chargé, appel de loadFormulaDetails');
+            loadFormulaDetails();
+        });
+
+        function updatePaymentDetails() {
+            const selectedRooms = document.querySelectorAll('input[name="roomType"]:checked');
+            const paymentRoomsContainer = document.getElementById('payment-selected-rooms');
+            const paymentTotalElement = document.getElementById('payment-total-amount');
+            
+            if (paymentRoomsContainer && paymentTotalElement) {
+                paymentRoomsContainer.innerHTML = '';
+                
+                if (selectedRooms.length === 0) {
+                    paymentTotalElement.textContent = '0 FCFA';
+                    return;
+                }
+
+                let totalPrice = 0;
+                selectedRooms.forEach(checkbox => {
+                    const roomLabel = checkbox.nextElementSibling.querySelector('.block').textContent;
+                    const priceText = checkbox.parentElement.nextElementSibling.textContent;
+                    const price = parseInt(priceText.replace(/\s+/g, '').replace('FCFA', ''));
+                    totalPrice += price;
+
+                    const roomElement = document.createElement('div');
+                    roomElement.className = 'flex justify-between items-center text-sm';
+                    roomElement.innerHTML = `
+                        <span>${roomLabel}</span>
+                        <span class="text-[#0F5132]">${priceText}</span>
+                    `;
+                    paymentRoomsContainer.appendChild(roomElement);
+                });
+
+                paymentTotalElement.textContent = formatPrice(totalPrice);
+            }
+        }
+
+        function processPayment() {
+            const selectedRooms = document.querySelectorAll('input[name="roomType"]:checked');
+            const paymentOption = document.querySelector('input[name="paymentOption"]:checked');
+            
+            if (!paymentOption) {
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Veuillez sélectionner une option de paiement',
+                    icon: 'error',
+                    confirmButtonColor: '#0F5132'
+                });
+                return;
+            }
+
+            let amount = 0;
+            selectedRooms.forEach(room => {
+                const priceText = room.parentElement.nextElementSibling.textContent;
+                const price = parseInt(priceText.replace(/\s+/g, '').replace('FCFA', ''));
+                amount += price;
+            });
+
+            if (paymentOption.value === 'partial') {
+                amount = amount * 0.3;
+            }
+
+            // Vérifier si le montant dépasse la limite de CinetPay (1 500 000 XOF)
+            if (amount > 1500000) {
+                Swal.fire({
+                    title: 'Montant trop élevé',
+                    html: `
+                        <div style="padding: 20px; background: #f7f9fc; border-radius: 5px; margin-bottom: 20px;">
+                            <div style="font-size: 18px; font-weight: bold; color: #0F5132; margin-bottom: 15px;">
+                                Montant supérieur à la limite
+                            </div>
+                            <div style="color: #666; line-height: 1.5;">
+                                Le montant total (${formatPrice(amount)}) dépasse la limite autorisée par CinetPay (1 500 000 XOF).<br>
+                                Veuillez nous contacter pour effectuer votre paiement.
+                            </div>
+                        </div>
+                    `,
+                    icon: 'warning',
+                    confirmButtonColor: '#0F5132',
+                    showCancelButton: true,
+                    cancelButtonText: 'Annuler',
+                    confirmButtonText: 'Nous contacter'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/contact.html';
+                    }
+                });
+                return;
+            }
+
+            // Configuration de CinetPay
+            CinetPay.setConfig({
+                apikey: '19432593496700e062451d40.38423653',
+                site_id: '5881031',
+                notify_url: 'https://siravoyage.com/payment-notification',
+                mode: 'PRODUCTION'
+            });
+
+            // Récupération des informations du client
+            const fullname = document.getElementById('fullname').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+
+            // Préparation de la description
+            const roomTypes = Array.from(selectedRooms).map(room => 
+                room.nextElementSibling.querySelector('.block').textContent
+            ).join(', ');
+
+            CinetPay.getCheckout({
+                transaction_id: Math.floor(Math.random() * 100000000).toString(),
+                amount: amount,
+                currency: 'XOF',
+                channels: 'ALL',
+                description: `Réservation ${roomTypes} - ${paymentOption.value === 'partial' ? 'Acompte 30%' : 'Paiement total'}`,
+                customer_name: fullname.split(' ')[0],
+                customer_surname: fullname.split(' ').slice(1).join(' '),
+                customer_email: email,
+                customer_phone_number: phone,
+                customer_address: address,
+                customer_city: "Abidjan",
+                customer_country: "CI",
+                customer_state: "CI",
+                customer_zip_code: "00225"
+            });
+
+            CinetPay.waitResponse(function(data) {
+                if (data.status === "REFUSED") {
+                    Swal.fire({
+                        title: 'Paiement échoué',
+                        text: 'Votre paiement n\'a pas pu être effectué. Veuillez réessayer.',
+                        icon: 'error',
+                        confirmButtonColor: '#0F5132'
+                    });
+                } else if (data.status === "ACCEPTED") {
+                    Swal.fire({
+                        title: 'Paiement réussi !',
+                        html: `
+                            <div style="padding: 20px; background: #f7f9fc; border-radius: 5px; margin-bottom: 20px;">
+                                <div style="font-size: 18px; font-weight: bold; color: #0F5132; margin-bottom: 15px;">
+                                    Merci pour votre paiement !
+                                </div>
+                                <div style="color: #666; line-height: 1.5;">
+                                    Vous recevrez un email de confirmation dans les prochaines minutes.
+                                </div>
+                            </div>
+                        `,
+                        icon: 'success',
+                        confirmButtonColor: '#0F5132',
+                        timer: 5000,
+                        timerProgressBar: true
+                    }).then(() => {
+                        // Réinitialiser le formulaire
+                        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+                        document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]').forEach(input => input.value = '');
+                        currentStep = 1;
+                        showStep(currentStep);
+                    });
+                }
+            });
+
+            CinetPay.onError(function(data) {
+                console.error('Erreur CinetPay:', data);
+                Swal.fire({
+                    title: 'Erreur',
+                    text: 'Une erreur est survenue lors du traitement du paiement. Veuillez réessayer.',
+                    icon: 'error',
+                    confirmButtonColor: '#0F5132'
+                });
+            });
+        }
+
+        // Ajout de l'écouteur d'événements pour le bouton d'enregistrement
+        document.getElementById('saveFormBtn').addEventListener('click', validateAndSaveForm);
+
+        // Ajout de l'écouteur d'événements pour le bouton de paiement
+        document.getElementById('payButton').addEventListener('click', processPayment);
+
+        // Mise à jour de l'écouteur d'événements pour les options de paiement
+        document.querySelectorAll('input[name="paymentOption"]').forEach(input => {
+            input.addEventListener('change', updatePaymentDetails);
+        });
+
+        // Ajout des écouteurs d'événements pour la navigation
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+
+        // Initialize
+        showStep(1);
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

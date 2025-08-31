@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AL BAYT - Hajj et Omra</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tailwind & Custom CSS -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script>
+        // Test de base pour vérifier si JavaScript est activé
+        console.log('Test JavaScript - Le script est chargé');
+        
+        // Attendre que le DOM soit complètement chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('=== DÉBUT DU CHARGEMENT ===');
+            
+            // Récupérer l'ID de la formule depuis l'URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const formulaId = urlParams.get('id');
+            console.log('ID de la formule:', formulaId);
+            
+            // Charger les données de la formule via l'API
+            fetch(`/api/formulas/${formulaId}`)
+                .then(response => {
+                    console.log('Statut de la réponse API:', response.status);
+                    if (!response.ok) {
+                        throw new Error(`Erreur HTTP: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(formula => {
+                    console.log('Données de la formule reçues:', formula);
+                    if (!formula) {
+                        throw new Error('Formule non trouvée');
+                    }
+
+                    // Mettre à jour les tarifs dans l'overlay
+                    const tarifsTable = document.querySelector('.sira-tarifs-table');
+                    if (tarifsTable) {
+                        tarifsTable.innerHTML = `
+                            <div class="sira-tarifs-row sira-tarifs-header">
+                                <div>Type d'hébergement</div>
+                                <div>Prix</div>
+                            </div>
+                            <div class="sira-tarifs-row">
+                                <div>Chambre individuelle</div>
+                                <div class="sira-tarifs-price">${formula.tarifs.individuelle} FCFA</div>
+                            </div>
+                            <div class="sira-tarifs-row">
+                                <div>Chambre double</div>
+                                <div class="sira-tarifs-price">${formula.tarifs.double} FCFA</div>
+                            </div>
+                            <div class="sira-tarifs-row">
+                                <div>Chambre triple</div>
+                                <div class="sira-tarifs-price">${formula.tarifs.triple} FCFA</div>
+                            </div>
+                            <div class="sira-tarifs-row">
+                                <div>Chambre quadruple</div>
+                                <div class="sira-tarifs-price">${formula.tarifs.quadruple} FCFA</div>
+                            </div>
+                        `;
+                        console.log('Table des tarifs mise à jour avec succès');
+                    } else {
+                        throw new Error('Table des tarifs non trouvée dans le DOM');
+                    }
+
+                    // Mise à jour du prix principal
+                    const priceElement = document.getElementById('formula-price');
+                    if (priceElement) {
+                        priceElement.textContent = `${(formula.price || 0)} FCFA`;
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement des tarifs:', error);
+                    const tarifsTable = document.querySelector('.sira-tarifs-table');
+                    if (tarifsTable) {
+                        tarifsTable.innerHTML = `
+                            <div class="sira-tarifs-row">
+                                <div style="color: red;">Erreur lors du chargement des tarifs</div>
+                            </div>
+                        `;
+                    }
+                });
+
+            // Vérifier les éléments du bouton tarifs
+            const tarifsBtn = document.getElementById('sira-tarifs-toggle');
+            const tarifsOverlay = document.getElementById('sira-tarifs-overlay');
+            const tarifsClose = document.getElementById('sira-tarifs-close');
+            
+            // Ajouter un gestionnaire d'événements de test
+            if (tarifsBtn && tarifsOverlay) {
+                tarifsBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    tarifsOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                });
+            }
+
+            // Gestionnaire de fermeture
+            if (tarifsClose && tarifsOverlay) {
+                tarifsClose.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    tarifsOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                });
+            }
+
+            // Gestionnaire de clic sur l'overlay
+            if (tarifsOverlay) {
+                tarifsOverlay.addEventListener('click', function(e) {
+                    if (e.target === tarifsOverlay || e.target.classList.contains('sira-tarifs-bg')) {
+                        tarifsOverlay.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
+                });
+            }
+        });
+    </script>
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            line-height: 1.1;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 900;
+        }
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0F5132;
+            margin-right: 0.8rem;
+            margin-left: 0.8rem;
+            transition: color 0.2s;
+        }
+        .nav-link:last-child {
+            margin-right: 0;
+        }
+        .nav-link:hover {
+            color: #B38F2E;
+        }
+        @media (max-width: 1023px) {
+            .nav-link {
+                margin-right: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 85%;
+            max-width: 340px;
+            background: white;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+            font-size: 0.95rem;
+            padding: 0.75rem 1.1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.18rem;
+            color: #0F5132;
+            background: #F5F5DC;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-menu .flex-col a:hover, .mobile-menu .flex-col button:hover {
+            background: #0F5132;
+            color: #fff;
+        }
+        .mobile-menu .flex-col a:last-child, .mobile-menu .flex-col button:last-child {
+            margin-bottom: 0;
+        }
+        .mobile-menu .flex-col {
+            gap: 0.5rem !important;
+        }
+        .mobile-menu .text-2xl {
+            font-size: 1.5rem;
+        }
+        .mobile-menu .p-6 {
+            padding: 1.5rem 1rem 1rem 1rem;
+        }
+        .mobile-menu .font-bold {
+            font-size: 1.3rem;
+        }
+        /* Afficher le menu hamburger et cacher le menu desktop jusqu'à 1023px */
+        @media (max-width: 1023px) {
+            .md\:flex, .hidden.md\:flex {
+                display: none !important;
+            }
+            #mobile-menu-button {
+                display: block !important;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+        }
+        /* Afficher le menu desktop et cacher le hamburger à partir de 1024px */
+        @media (min-width: 1024px) {
+            .md\:flex {
+                display: flex !important;
+            }
+            #mobile-menu-button, .mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+        header nav {
+            padding-top: 1.25rem !important; /* 20px */
+            padding-bottom: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            header nav {
+                padding-top: 1.75rem !important; /* 28px */
+                padding-bottom: 1.75rem !important;
+            }
+        }
+        .info-panel {
+            position: sticky;
+            top: 100px;
+            height: auto;
+            overflow: visible;
+        }
+        .timeline-line {
+            position: relative;
+        }
+        .timeline-line::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #0F5132;
+            transform: translateX(-50%);
+        }
+        .timeline-dot {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Styles pour le ratio d'aspect des images */
+        .aspect-w-16 {
+            position: relative;
+            padding-bottom: 56.25%; /* 9/16 = 0.5625 */
+        }
+
+        .aspect-w-16 > * {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+        }
+
+        /* Styles pour Swiper et la galerie */
+        .gallery-main {
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px;
+        }
+        
+        .gallery-main .swiper-slide {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gallery-main img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .gallery-main .swiper-pagination {
+            bottom: 20px;
+        }
+
+        .gallery-main .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            opacity: 0.5;
+        }
+
+        .gallery-main .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #0F5132;
+        }
+
+        /* Styles pour le carrousel des vols */
+        /* Ajustement de l'espacement du contenu */
+        .main-content {
+            padding-top: 8rem; /* Augmentation de l'espacement en haut */
+            padding-bottom: 6rem;
+        }
+
+        /* Styles pour le carrousel des vols */
+        .flights-swiper {
+            padding-bottom: 2rem;
+        }
+
+        .flights-swiper .swiper-pagination {
+            bottom: 0;
+        }
+
+        .flights-swiper .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: #0F5132;
+            opacity: 0.3;
+            margin: 0 4px;
+        }
+
+        .flights-swiper .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #0F5132;
+        }
+
+        /* Style pour les onglets */
+        .tab-button {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background-color: #1F2937;
+            color: white;
+        }
+
+        .tab-button.active {
+            background-color: #1F2937;
+            color: white;
+        }
+
+        /* Styles pour la galerie d'hôtel */
+        .hotel-gallery {
+            position: relative;
+            width: 100%;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .hotel-gallery .swiper-slide {
+            width: 100%;
+        }
+
+        .hotel-gallery .swiper-button-next,
+        .hotel-gallery .swiper-button-prev {
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.3);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .hotel-gallery .swiper-button-next:hover,
+        .hotel-gallery .swiper-button-prev:hover {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .hotel-gallery .swiper-button-next:after,
+        .hotel-gallery .swiper-button-prev:after {
+            font-size: 1.5rem;
+        }
+
+        .hotel-gallery .swiper-pagination {
+            position: absolute;
+            bottom: 1rem;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .hotel-gallery .swiper-pagination-bullet {
+            width: 8px;
+            height: 8px;
+            background: #ffffff;
+            opacity: 0.7;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hotel-gallery .swiper-pagination-bullet-active {
+            opacity: 1;
+            background: #0F5132;
+            transform: scale(1.2);
+        }
+
+        /* Transition pour les contenus des onglets */
+        .tab-content {
+            transition: opacity 0.3s ease;
+        }
+
+        .tab-content.hidden {
+            display: none;
+            opacity: 0;
+        }
+
+        .tab-content:not(.hidden) {
+            opacity: 1;
+        }
+
+        /* Style pour les informations de l'hôtel */
+        .hotel-info {
+            transition: all 0.3s ease;
+        }
+
+        .hotel-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Styles pour la section Programme */
+        .program-item {
+            border: 1px solid #E5E7EB;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .program-item:hover {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .program-header {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .program-date {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+            margin-right: 1.5rem;
+        }
+
+        .program-month {
+            font-size: 0.875rem;
+            color: #0F5132;
+            font-weight: 600;
+        }
+
+        .program-day {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1F2937;
+        }
+
+        .program-title {
+            flex-grow: 1;
+            font-weight: 500;
+            color: #1F2937;
+        }
+
+        .program-arrow {
+            width: 24px;
+            height: 24px;
+            transition: transform 0.3s ease;
+        }
+
+        .program-arrow.active {
+            transform: rotate(180deg);
+        }
+
+        .program-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .program-content.active {
+            max-height: 500px;
+        }
+
+        .program-details {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            .program-details {
+                grid-template-columns: 1fr 300px;
+            }
+        }
+
+        .program-details::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #0F5132;
+        }
+
+        .program-image-container {
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .program-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .program-duration {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .program-itinerary {
+            font-weight: 500;
+            color: #0F5132;
+            margin-bottom: 0.75rem;
+        }
+
+        .program-description {
+            color: #4B5563;
+            line-height: 1.6;
+        }
+
+        /* Styles pour la section Plus de détails */
+        .details-item {
+            border-bottom: 1px solid #E5E7EB;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .details-item:last-child {
+            border-bottom: none;
+        }
+
+        .details-header {
+            padding: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .details-title {
+            flex-grow: 1;
+            padding-right: 2rem;
+        }
+
+        .details-main-title {
+            font-weight: 600;
+            color: #1F2937;
+            margin-bottom: 0.25rem;
+        }
+
+        .details-subtitle {
+            color: #6B7280;
+            font-size: 0.95rem;
+        }
+
+        .details-arrow {
+            color: #0F5132;
+            transition: transform 0.3s ease;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .details-arrow.active {
+            transform: rotate(180deg);
+        }
+
+        .details-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+            background-color: #FAFAF9;
+        }
+
+        .details-content.active {
+            max-height: 1000px;
+        }
+
+        .details-text {
+            padding: 0 1.5rem 1.5rem 1.5rem;
+            color: #4B5563;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 640px) {
+            .details-header {
+                padding: 1rem;
+            }
+
+            .details-text {
+                padding: 0 1rem 1rem 1rem;
+            }
+        }
+
+        /* Styles pour le tableau des tarifs */
+        .rates-table {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background: white;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .rates-table.active {
+            max-height: 400px;
+        }
+
+        .rates-table-header {
+            padding: 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            font-weight: 600;
+            color: #1F2937;
+        }
+
+        .rates-table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #E5E7EB;
+            transition: all 0.2s ease;
+        }
+
+        .rates-table-row:last-child {
+            border-bottom: none;
+        }
+
+        .rates-table-row:hover {
+            background-color: #F9FAFB;
+        }
+
+        .rates-table-cell {
+            color: #4B5563;
+            font-size: 0.95rem;
+        }
+
+        .rates-table-cell.price {
+            font-weight: 600;
+            color: #1F2937;
+        }
+
+        /* Style pour le bouton des tarifs */
+        .rates-button {
+            position: relative;
+            width: 100%;
+        }
+
+        .rates-button:focus + .rates-table {
+            max-height: 400px;
+        }
+
+        /* Style personnalisé pour l'accordéon des tarifs */
+        .details-item.bg-gray-800 .details-header {
+            transition: all 0.3s ease;
+            background-color: #1F2937;
+        }
+
+        .details-item.bg-gray-800 .details-header:hover {
+            background-color: #374151;
+        }
+
+        .details-item.bg-gray-800 .details-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .details-item.bg-gray-800 .details-arrow.active {
+            transform: rotate(180deg);
+        }
+
+        .details-item.bg-gray-800 .details-content {
+            border-top: 2px solid #0F5132;
+        }
+
+        /* Style personnalisé pour le logo */
+        .logo-img {
+            height: 5rem; /* 64px pour mobile */
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 5rem; /* 128px pour desktop */
+            }
+        }
+
+        /* Grille principale harmonisée à la ALBAYT */
+        @media (min-width: 992px) {
+            .main-content .container {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 2.5rem;
+                max-width: 1200px;
+            }
+            .main-content .main-left {
+                flex: 1 1 0%;
+                min-width: 0;
+                max-width: calc(100% - 400px);
+            }
+            .main-content .main-right {
+                position: sticky;
+                top: 110px;
+                align-self: flex-start;
+                z-index: 10;
+                height: fit-content;
+            }
+            .main-content .info-panel {
+                margin-bottom: 0;
+                box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+                border-radius: 1rem;
+                background: #fff;
+                padding: 2rem 1.5rem;
+            }
+        }
+        @media (max-width: 991px) {
+            .main-content .container {
+                display: block;
+            }
+            .main-content .main-left,
+            .main-content .main-right {
+                width: 100%;
+                max-width: 100%;
+                position: static;
+            }
+        }
+        .sira-details-panel {
+            background: #fff;
+            border-radius: 1.2rem;
+            box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
+            padding: 2.2rem 1.7rem 1.5rem 1.7rem;
+            margin-bottom: 0;
+            min-width: 0;
+        }
+        .sira-panel-drag {
+            width: 48px;
+            height: 6px;
+            background: #E5E5E5;
+            border-radius: 3px;
+            margin: 0 auto 1.2rem auto;
+        }
+        .sira-panel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.1rem 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .sira-panel-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+        }
+        .sira-panel-ico {
+            color: #B38F2E;
+            font-size: 1.25rem;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .sira-panel-label {
+            color: #888;
+            font-size: 0.97rem;
+            font-weight: 500;
+            line-height: 1.1;
+        }
+        .sira-panel-value {
+            color: #222;
+            font-size: 1.08rem;
+            font-weight: 700;
+            line-height: 1.1;
+        }
+        .sira-tarifs-btn {
+            width: 100%;
+            background: #444;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.9rem 1.2rem;
+            margin: 1.1rem 0 0.7rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.7rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sira-tarifs-btn:hover {
+            background: #222;
+        }
+        .sira-panel-prix-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.7rem;
+            margin: 0.7rem 0 0.2rem 0;
+        }
+        .sira-panel-prix-label {
+            color: #888;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+        .sira-panel-prix-val {
+            color: #222;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-right: auto;
+            margin-left: 1.2rem;
+        }
+        .sira-panel-devis-btn {
+            background: #B38F2E;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.05rem;
+            border-radius: 0.5rem;
+            padding: 0.7rem 1.3rem;
+            text-decoration: none;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+        .sira-panel-devis-btn:hover {
+            background: #8a6c1d;
+        }
+        .sira-panel-note {
+            color: #888;
+            font-size: 0.93rem;
+            text-align: left;
+            margin-top: 0.7rem;
+        }
+        .sira-tarifs-overlay {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .sira-tarifs-overlay.active {
+            display: flex !important;
+            opacity: 1;
+        }
+        .sira-tarifs-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        .sira-tarifs-card {
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            border-radius: 1.1rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.13);
+            padding: 2.1rem 2.2rem 1.5rem 2.2rem;
+            min-width: 340px;
+            max-width: 95vw;
+            margin: 0 auto;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .sira-tarifs-overlay.active .sira-tarifs-card {
+            transform: translateY(0);
+        }
+        .sira-tarifs-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #222;
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+        .sira-tarifs-table {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .sira-tarifs-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.08rem;
+            padding: 0.45rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        .sira-tarifs-header {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #B38F2E;
+            border-bottom: 2px solid #B38F2E;
+            background: #faf8f3;
+        }
+        .sira-tarifs-price {
+            font-weight: 700;
+            color: #222;
+            text-align: right;
+        }
+        .sira-tarifs-close {
+            position: absolute;
+            top: 0.7rem;
+            right: 1.1rem;
+            background: none;
+            border: none;
+            color: #B38F2E;
+            font-size: 1.3rem;
+            cursor: pointer;
+            z-index: 3;
+            transition: color 0.2s;
+        }
+        .sira-tarifs-close:hover {
+            color: #222;
+        }
+        .sira-devis-overlay {
+            display: none;
+            position: fixed;
+            z-index: 1300;
+            top: 0; left: 0; right: 0; bottom: 0;
+            align-items: center;
+            justify-content: center;
+        }
+        .sira-devis-overlay.active {
+            display: flex;
+        }
+        .sira-devis-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.18);
+            z-index: 1;
+        }
+        .sira-devis-card {
+            position: relative;
+            z-index: 2;
+            background: #fff;
+            border-radius: 1.1rem;
+            box-shadow: 0 8px 32px 0 rgba(0,0,0,0.13);
+            padding: 2.1rem 2.2rem 1.5rem 2.2rem;
+            min-width: 340px;
+            max-width: 98vw;
+            max-height: 95vh;
+            overflow-y: auto;
+            margin: 0 auto;
+        }
+        .sira-devis-close {
+            position: absolute;
+            top: 0.7rem;
+            right: 1.1rem;
+            background: none;
+            border: none;
+            color: #B38F2E;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 3;
+            transition: color 0.2s;
+        }
+        .sira-devis-close:hover {
+            color: #222;
+        }
+        .sira-stepper {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        .sira-step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #0F5132;
+            border: 2px solid #f3f4f6;
+            transition: background 0.2s, color 0.2s, border 0.2s;
+        }
+        .sira-step.active, .sira-step.completed {
+            background: #0F5132;
+            color: #fff;
+            border: 2px solid #0F5132;
+        }
+        .sira-form-step { display: none; }
+        .sira-form-step.active { display: block; }
+        .sira-form-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 1.2rem; }
+        .sira-quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .sira-quantity-controls { display: flex; align-items: center; gap: 15px; }
+        .sira-quantity-btn {
+            width: 32px; height: 32px; border-radius: 50%; border: 1px solid #0F5132;
+            background: white; color: #0F5132; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.2s ease;
+        }
+        .sira-quantity-btn:hover { background: #0F5132; color: white; }
+        .sira-devis-next-btn, .sira-devis-prev-btn, .sira-devis-submit-btn {
+            margin-top: 1.2rem;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            background: #0F5132;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .sira-devis-next-btn:hover, .sira-devis-prev-btn:hover, .sira-devis-submit-btn:hover { background: #06351e; }
+        .sira-devis-prev-btn { background: #f3f4f6; color: #0F5132; margin-left: 0.7rem; }
+        .sira-devis-prev-btn:hover { background: #e5e7eb; }
+        .sira-reservation-details { background: #f9fafb; border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .sira-detail-row { display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .sira-detail-total { font-weight: 700; }
+        .sira-form-note { color: #888; font-size: 0.93rem; margin-top: 0.7rem; }
+        .sira-floating-label-group { position: relative; margin-bottom: 20px; }
+        .sira-floating-label-input {
+            width: 100%; height: 50px; padding: 0 15px; border: 1px solid #e5e7eb; border-radius: 6px; font-size: 16px; outline: none; transition: all 0.3s ease;
+        }
+        .sira-floating-label { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); background: white; padding: 0 5px; color: #6b7280; transition: all 0.3s ease; pointer-events: none; }
+        .sira-floating-label-input:focus + .sira-floating-label, .sira-floating-label-input:not(:placeholder-shown) + .sira-floating-label { top: 0; font-size: 12px; color: #0F5132; }
+        .sira-floating-label-input:focus { border-color: #0F5132; }
+        @media (max-width: 600px) { .sira-devis-card { min-width: 0; padding: 1.1rem 0.5rem; } }
+        .cta-btn-mobile {
+            width: 100%;
+            padding: 1rem 0;
+            background-color: #0F5132;
+            color: white;
+            text-align: center;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            transition: background-color 0.3s;
+        }
+        .cta-btn-mobile:hover {
+            background-color: #222;
+        }
+        @media (max-width: 500px) {
+            .cta-btn-mobile {
+                width: 100% !important;
+                display: block;
+                text-align: center !important;
+                padding: 12px 0 !important;
+                font-size: 1rem !important;
+                margin-top: 12px !important;
+                white-space: nowrap !important;
+                letter-spacing: 0.5px !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#F5F5DC]">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <nav class="container mx-auto px-4 py-2">
+            <div class="flex items-center justify-between min-h-[48px]">
+                <!-- Branding à gauche sur mobile, centré sur desktop -->
+                <div class="flex-1 flex items-center md:justify-center justify-start">
+                    <a href="/index.html" class="logo-text block text-2xl md:text-3xl font-extrabold text-black select-none" style="letter-spacing: 6px;">
+                        <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                    </a>
+                </div>
+                <!-- Menus à gauche (desktop uniquement) -->
+                <div class="hidden md:flex flex-1 items-center gap-10 md:gap-14 uppercase tracking-wider font-semibold text-base md:text-lg" style="letter-spacing: 2px;">
+                    <a href="/oumra.html" class="text-[#0F5132] nav-link">Oumra</a>
+                    <a href="/hajj.html" class="text-[#0F5132] nav-link">Hajj</a>
+                    <a href="/about.html" class="text-[#0F5132] nav-link">À propos</a>
+                    <a href="/blog.html" class="text-[#0F5132] nav-link">Blog</a>
+                </div>
+                <!-- Bouton Contact à droite (desktop uniquement) -->
+                <div class="hidden md:flex items-center flex-1 justify-end">
+                    <a href="/contact.html" class="bg-[#0F5132] text-white px-6 py-2 rounded-md hover:bg-[#0F5132]/90 transition-all duration-300 text-base font-semibold">
+                        Contact
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-[#0F5132] ml-2" id="mobile-menu-button" aria-label="Ouvrir le menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay md:hidden" id="menu-overlay"></div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-2xl font-bold text-[#0F5132]">Menu</span>
+                <button class="text-[#0F5132]" id="close-menu-button" aria-label="Fermer le menu">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <a href="/index.html" class="logo-text block text-xl font-extrabold text-black text-center mb-4" style="letter-spacing: 4px;">
+                    <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                </a>
+                <a href="/oumra.html">Oumra</a>
+                <a href="/hajj.html">Hajj</a>
+                <a href="/about.html">À propos</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container mx-auto px-4">
+            <div class="main-left">
+                <!-- Section Principale -->
+                <section class="mb-12">
+                    <div class="relative rounded-lg overflow-hidden bg-white shadow-sm">
+                        <!-- Image principale -->
+                        <div class="relative">
+                            <div class="swiper gallery-main">
+                                <div class="swiper-wrapper">
+                                    <!-- Les images seront injectées dynamiquement -->
+                                </div>
+                                <div class="swiper-pagination"></div>
+                            </div>
+                            <!-- Badge compagnie aérienne -->
+                            <div class="absolute top-4 right-4 bg-white/90 p-2 rounded-lg shadow-sm z-10">
+                                <img src="" alt="Logo compagnie" class="h-8" id="airline-logo">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Vols -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Vols aller-retour</h2>
+                    <div class="flex items-center mb-4">
+                        <!-- <img src="" alt="Compagnie aérienne" class="h-8 mr-2" id="airline-logo"> -->
+                        <span class="bg-[#0F5132] text-white px-4 py-1 rounded-full text-sm flex items-center">
+                            Vol confirmé <i class="fa-solid fa-plane ml-2"></i>
+                        </span>
+                    </div>
+
+                    <!-- Carrousel des vols -->
+                    <div class="swiper flights-swiper">
+                        <div class="swiper-wrapper">
+                            <!-- Les slides seront injectés ici dynamiquement -->
+                        </div>
+                        <div class="swiper-pagination"></div>
+                    </div>
+                </section>
+
+                <!-- Section Hébergement -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Hébergement</h2>
+                    
+                    <!-- Tabs -->
+                    <div class="inline-flex rounded-lg mb-6 bg-gray-100 space-x-2">
+                        <button class="tab-button px-8 py-2 rounded-lg" data-tab="medina">
+                            Medina
+                        </button>
+                        <button class="tab-button px-8 py-2 rounded-lg" data-tab="makkah">
+                            Makkah
+                        </button>
+                    </div>
+
+                    <!-- Tab Content - Medina -->
+                    <div id="medina-tab" class="tab-content">
+                        <!-- Swiper Gallery -->
+                        <div id="medina-gallery" class="swiper hotel-gallery mb-6">
+                            <div class="swiper-wrapper">
+                                <!-- Les images seront injectées dynamiquement -->
+                            </div>
+                            <!-- Navigation -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <!-- Pagination -->
+                            <div class="swiper-pagination"></div>
+                        </div>
+
+                        <!-- Informations de l'hôtel -->
+                        <div class="bg-white rounded-lg p-6">
+                            <!-- Le contenu sera injecté dynamiquement -->
+                        </div>
+                    </div>
+
+                    <!-- Tab Content - Makkah -->
+                    <div id="makkah-tab" class="tab-content hidden">
+                        <!-- Swiper Gallery -->
+                        <div id="makkah-gallery" class="swiper hotel-gallery mb-6">
+                            <div class="swiper-wrapper">
+                                <!-- Les images seront injectées dynamiquement -->
+                            </div>
+                            <!-- Navigation -->
+                            <div class="swiper-button-next"></div>
+                            <div class="swiper-button-prev"></div>
+                            <!-- Pagination -->
+                            <div class="swiper-pagination"></div>
+                        </div>
+
+                        <!-- Informations de l'hôtel -->
+                        <div class="bg-white rounded-lg p-6">
+                            <!-- Le contenu sera injecté dynamiquement -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Section Programme -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Programme</h2>
+                    <div class="space-y-4" id="program-container">
+                        <!-- Les éléments du programme seront injectés ici dynamiquement -->
+                    </div>
+                </section>
+
+                <!-- Section Plus de détails -->
+                <section class="mb-12">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">Plus de détails</h2>
+                    <div class="bg-white rounded-lg overflow-hidden shadow-sm">
+                        <!-- Accordéon 1 -->
+                        <div class="details-item">
+                            <div class="details-header" data-details="details1">
+                                <div class="details-title">
+                                    <div class="details-main-title">Préparez-vous pour une Omra Parfaite</div>
+                                    <div class="details-subtitle">Cours Complet des Rites de la Omra</div>
+                                </div>
+                                <i class="fas fa-chevron-down details-arrow"></i>
+                            </div>
+                            <div class="details-content" id="details1">
+                                <div class="details-text">
+                                    Entamez votre voyage sacré à Médine avec un cours unique et détaillé des rites de la Omra, conçu pour vous guider à chaque étape. Apprenez à accomplir vos rituels dans les meilleures conditions, en suivant scrupuleusement la Sunnah, pour une expérience spirituelle profonde et authentique. Grâce à une approche pratique et interactive, ce cours vous prépare à vivre l'Omra avec sérénité, confiance et dévotion, tout en respectant les enseignements du Prophète (PBSL).
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordéon 2 -->
+                        <div class="details-item">
+                            <div class="details-header" data-details="details2">
+                                <div class="details-title">
+                                    <div class="details-main-title">Promenade Nocturne à Médine</div>
+                                    <div class="details-subtitle">Découvrez Masjid Qoubaa et les Rues de Médine</div>
+                                </div>
+                                <i class="fas fa-chevron-down details-arrow"></i>
+                            </div>
+                            <div class="details-content" id="details2">
+                                <div class="details-text">
+                                    Vivez une expérience unique lors d'une promenade nocturne guidée à travers les rues historiques de Médine. Visitez la majestueuse Masjid Qoubaa, la première mosquée construite en Islam, et imprégnez-vous de son atmosphère spirituelle particulière. Notre guide expert vous fera découvrir l'histoire fascinante de ces lieux saints, tout en partageant des récits enrichissants sur la vie du Prophète (PBSL) et le développement de l'Islam à Médine.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordéon 3 -->
+                        <div class="details-item">
+                            <div class="details-header" data-details="details3">
+                                <div class="details-title">
+                                    <div class="details-main-title">Tour de la mosquée pour un repérage des lieux</div>
+                                    <div class="details-subtitle">Découvrez Votre Environnement à Médine et Makkah</div>
+                                </div>
+                                <i class="fas fa-chevron-down details-arrow"></i>
+                            </div>
+                            <div class="details-content" id="details3">
+                                <div class="details-text">
+                                    Familiarisez-vous avec les lieux saints grâce à notre visite guidée détaillée des mosquées de Médine et Makkah. Cette orientation essentielle vous permettra de vous repérer facilement dans ces vastes complexes, d'identifier les points d'entrée importants, les zones de prière, et les services essentiels. Notre guide expérimenté vous donnera des conseils pratiques pour optimiser vos déplacements et maximiser votre temps de prière et de recueillement.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordéon 4 -->
+                        <div class="details-item">
+                            <div class="details-header" data-details="details4">
+                                <div class="details-title">
+                                    <div class="details-main-title">Kit Cadeau Omra</div>
+                                    <div class="details-subtitle">Tout pour un Voyage Spirituel Réussi</div>
+                                </div>
+                                <i class="fas fa-chevron-down details-arrow"></i>
+                            </div>
+                            <div class="details-content" id="details4">
+                                <div class="details-text">
+                                    Recevez un kit complet spécialement conçu pour votre voyage spirituel. Ce kit inclut des vêtements d'Ihram de qualité, un guide pratique détaillé des rituels, un tapis de prière de voyage, un chapelet traditionnel, des huiles essentielles apaisantes, et d'autres accessoires essentiels. Chaque élément a été soigneusement sélectionné pour vous accompagner tout au long de votre pèlerinage et enrichir votre expérience spirituelle.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordéon 5 -->
+                        <div class="details-item">
+                            <div class="details-header" data-details="details5">
+                                <div class="details-title">
+                                    <div class="details-main-title">Avis Important</div>
+                                    <div class="details-subtitle">Vaccination Obligatoire contre la Méningite pour les Voyages en Arabie Saoudite à partir du 1er Février 2025</div>
+                                </div>
+                                <i class="fas fa-chevron-down details-arrow"></i>
+                            </div>
+                            <div class="details-content" id="details5">
+                                <div class="details-text">
+                                    Conformément aux nouvelles réglementations sanitaires de l'Arabie Saoudite, la vaccination contre la méningite devient obligatoire pour tous les voyageurs à partir du 1er février 2025. Cette mesure vise à protéger la santé des pèlerins et à prévenir la propagation de la maladie. Nous vous recommandons de planifier votre vaccination au moins 10 jours avant le départ. Le certificat de vaccination doit être présenté lors des formalités d'entrée en Arabie Saoudite.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="main-right">
+                <div class="info-panel sira-details-panel">
+                    <div class="sira-panel-drag"></div>
+                    <div class="sira-panel-grid">
+                        <div class="sira-panel-item">
+                            <i class="fa-regular fa-id-card sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Type de Voyage</div>
+                                <div class="sira-panel-value" data-info="type-voyage">Omra</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-solid fa-location-dot sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Ville de départ</div>
+                                <div class="sira-panel-value" data-info="ville-depart">Paris</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-regular fa-calendar sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Départ</div>
+                                <div class="sira-panel-value" data-info="date-depart">18-09-2025</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-regular fa-calendar sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Retour</div>
+                                <div class="sira-panel-value" data-info="date-retour">28-09-2025</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-solid fa-star sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Formule</div>
+                                <div class="sira-panel-value" data-info="formule">Formule Essentielle</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-solid fa-clock sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Durée</div>
+                                <div class="sira-panel-value" data-info="duree">10 jours</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-solid fa-moon sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Nuit</div>
+                                <div class="sira-panel-value" data-info="nuits-makkah">4 nuits</div>
+                            </div>
+                        </div>
+                        <div class="sira-panel-item">
+                            <i class="fa-solid fa-hotel sira-panel-ico"></i>
+                            <div>
+                                <div class="sira-panel-label">Hébergement</div>
+                                <div class="sira-panel-value" data-info="hotel-makkah">Al Ebaa Hotel</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="sira-tarifs-btn" id="sira-tarifs-toggle">
+                        <span>VOIR NOS TARIFS D'HÉBERGEMENTS</span>
+                        <i class="fa-solid fa-chevron-up"></i>
+                    </button>
+                    <div class="sira-tarifs-overlay" id="sira-tarifs-overlay">
+                        <div class="sira-tarifs-bg"></div>
+                        <div class="sira-tarifs-card">
+                            <button class="sira-tarifs-close" id="sira-tarifs-close" aria-label="Fermer les tarifs"><i class="fa-solid fa-chevron-down"></i></button>
+                            <div class="sira-tarifs-title">Les tarifs par personne</div>
+                            <div class="sira-tarifs-table">
+                                <!-- Le contenu sera injecté dynamiquement par JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sira-panel-prix-row">
+                        <div class="w-full">
+                            <div class="text-gray-500 text-sm mb-1">À partir de</div>
+                            <div class="flex items-center justify-between">
+                                <div class="text-2xl font-bold text-gray-800" id="formula-price">5250000 FCFA</div>
+                                <button class="bg-[#B38F2E] text-white font-bold py-2 px-6 rounded-md hover:bg-[#8a6c1d] transition" id="sira-devis-btn" onclick="window.location.href = '/preinscription.html?id=' + new URLSearchParams(window.location.search).get('id') + '&type=' + new URLSearchParams(window.location.search).get('type'); return false;">Je m'inscris</button>
+                            </div>
+                            <div class="text-gray-500 text-xs mt-2">
+                                * Les tarifs affichés n'incluent pas les frais de visa
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Social Media Bar -->
+    <div class="border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-snapchat"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold text-green-800 mb-4">Paris</h3>
+                    <p class="text-gray-600">123 Rue de la Paix</p>
+                    <p class="text-gray-600">75002 Paris, France</p>
+                    <p class="text-gray-600 mt-2">+33 1 23 45 67 89</p>
+                </div>
+
+                <!-- Logo and Description -->
+                <div class="text-center">
+                    <img src="images/Sira_voyage.png" alt="SIRA VOYAGE" class="h-12 mx-auto mb-2">
+                    <p class="text-gray-600 uppercase text-sm mb-4">HAJJ OMRA & TOURISME ÉTHIQUE</p>
+                    <p class="text-gray-600">Lun - Ven: 9h - 18h</p>
+                    <p class="text-gray-600">contact@siravoyage.com</p>
+                </div>
+
+                <!-- Links and Payment -->
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <a href="#" class="text-gray-600 hover:text-green-800">A propos</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">Info pratiques</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">Conditions de vente</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">FAQs</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">Blog</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">Contact</a>
+                    </div>
+                    <div class="flex items-center space-x-4 mt-6">
+                        <img src="images/paypal.svg" alt="PayPal" class="h-8">
+                        <img src="images/stripe.svg" alt="Stripe" class="h-8">
+                        <img src="images/visa.svg" alt="Visa" class="h-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="/js/formula-details.js"></script>
+    <script>
+        console.log('Script chargé - Début de l\'exécution');
+        
+        // Script pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded - La page est chargée');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            closeMenuButton.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+        });
+
+        // Récupérer l'ID de la formule depuis l'URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const formulaId = urlParams.get('id');
+        console.log('Formula ID:', formulaId);
+
+        // Variable globale pour stocker la formule
+        let currentFormula = null;
+
+        // Fonction pour formater la date
+        function formatDate(dateString) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+
+        // Fonction pour mettre à jour l'affichage de la formule
+        function updateFormulaDisplay() {
+            const formulaElement = document.querySelector('.info-panel [data-info="formule"]');
+            if (formulaElement && currentFormula) {
+                if (currentFormula.name.includes('ITHRAA AL KHAIR')) {
+                    formulaElement.textContent = currentFormula.name;
+                } else {
+                    formulaElement.textContent = currentFormula.formula || 'Non disponible';
+                }
+            }
+        }
+
+        // Charger les détails de la formule
+        async function loadFormulaDetails() {
+            try {
+                console.log('Chargement des détails de la formule...');
+                const response = await fetchWithTimeout(`/api/formulas/${formulaId}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                currentFormula = await response.json();
+                console.log('Formule chargée:', currentFormula);
+                updateFormulaDisplay();
+            } catch (error) {
+                console.error('Erreur lors du chargement des détails:', error);
+            }
+        }
+
+        // Fonction fetch avec timeout
+        async function fetchWithTimeout(resource, options = {}) {
+            const { timeout = 8000 } = options;
+            const controller = new AbortController();
+            const id = setTimeout(() => controller.abort(), timeout);
+            const response = await fetch(resource, {
+                ...options,
+                signal: controller.signal
+            });
+            clearTimeout(id);
+            return response;
+        }
+
+        // Tarifs overlay
+        console.log('Initialisation des éléments tarifs...');
+        const tarifsBtn = document.getElementById('sira-tarifs-toggle');
+        const tarifsOverlay = document.getElementById('sira-tarifs-overlay');
+        const tarifsClose = document.getElementById('sira-tarifs-close');
+
+        console.log('Éléments initiaux:', {
+            tarifsBtn: tarifsBtn ? 'trouvé' : 'non trouvé',
+            tarifsOverlay: tarifsOverlay ? 'trouvé' : 'non trouvé',
+            tarifsClose: tarifsClose ? 'trouvé' : 'non trouvé'
+        });
+
+        if (tarifsBtn && tarifsOverlay) {
+            console.log('Ajout des écouteurs d\'événements pour le bouton tarifs');
+            tarifsBtn.addEventListener('click', function(e) {
+                console.log('Bouton tarifs cliqué');
+                e.preventDefault();
+                console.log('État avant activation:', {
+                    overlayClass: tarifsOverlay.className,
+                    bodyOverflow: document.body.style.overflow
+                });
+                tarifsOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+                console.log('État après activation:', {
+                    overlayClass: tarifsOverlay.className,
+                    bodyOverflow: document.body.style.overflow
+                });
+            });
+        }
+
+        if (tarifsClose && tarifsOverlay) {
+            console.log('Ajout des écouteurs d\'événements pour le bouton de fermeture');
+            tarifsClose.addEventListener('click', function(e) {
+                console.log('Bouton fermeture cliqué');
+                e.preventDefault();
+                console.log('État avant désactivation:', {
+                    overlayClass: tarifsOverlay.className,
+                    bodyOverflow: document.body.style.overflow
+                });
+                tarifsOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+                console.log('État après désactivation:', {
+                    overlayClass: tarifsOverlay.className,
+                    bodyOverflow: document.body.style.overflow
+                });
+            });
+        }
+
+        if (tarifsOverlay) {
+            console.log('Ajout des écouteurs d\'événements pour l\'overlay');
+            tarifsOverlay.addEventListener('click', function(e) {
+                console.log('Overlay cliqué', {
+                    target: e.target,
+                    isOverlay: e.target === tarifsOverlay,
+                    isBackground: e.target.classList.contains('sira-tarifs-bg')
+                });
+                if (e.target === tarifsOverlay || e.target.classList.contains('sira-tarifs-bg')) {
+                    console.log('Fermeture de l\'overlay par clic extérieur');
+                    tarifsOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // Charger les détails de la formule au chargement de la page
+        if (formulaId) {
+            console.log('Chargement des détails de la formule avec ID:', formulaId);
+            loadFormulaDetails();
+        }
+
+        // Overlay préinscription
+        const devisBtn = document.getElementById('sira-devis-btn');
+        const devisOverlay = document.getElementById('sira-devis-overlay');
+        const devisClose = document.getElementById('sira-devis-close');
+        if (devisBtn && devisOverlay) {
+            devisBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                devisOverlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+        }
+        if (devisClose && devisOverlay) {
+            devisClose.addEventListener('click', function(e) {
+                e.preventDefault();
+                devisOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        }
+        if (devisOverlay) {
+            devisOverlay.addEventListener('click', function(e) {
+                if (e.target === devisOverlay || e.target.classList.contains('sira-devis-bg')) {
+                    devisOverlay.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // Gestion du formulaire de préinscription (étapes, compteurs)
+        const devisCounters = { adults: 0, children: 0, babies: 0, quad: 0, triple: 0, double: 0, single: 0 };
+        function updateDevisQuantity(type, change) {
+            const newValue = devisCounters[type] + change;
+            if (newValue >= 0) {
+                devisCounters[type] = newValue;
+                document.getElementById(`devis-${type}-count`).textContent = newValue;
+                updateDevisRemainingPassengers();
+            }
+        }
+        function updateDevisRoom(type, change) {
+            const newValue = devisCounters[type] + change;
+            if (newValue >= 0) {
+                devisCounters[type] = newValue;
+                document.getElementById(`devis-${type}-count`).textContent = newValue;
+            }
+        }
+        function updateDevisRemainingPassengers() {
+            const total = devisCounters.adults + devisCounters.children + devisCounters.babies;
+            document.getElementById('devis-remaining-passengers').textContent = total;
+        }
+
+        // Navigation étapes
+        const devisSteps = [1,2,3,4];
+        let devisCurrentStep = 1;
+        function showDevisStep(step) {
+            devisSteps.forEach(s => {
+                document.getElementById(`sira-step${s}`).classList.remove('active');
+                document.querySelector(`.sira-step[data-step="${s}"]`).classList.remove('active','completed');
+            });
+            document.getElementById(`sira-step${step}`).classList.add('active');
+            devisSteps.forEach(s => {
+                if (s < step) document.querySelector(`.sira-step[data-step="${s}"]`).classList.add('completed');
+                else if (s === step) document.querySelector(`.sira-step[data-step="${s}"]`).classList.add('active');
+            });
+            devisCurrentStep = step;
+        }
+        document.getElementById('sira-devis-next1').onclick = () => showDevisStep(2);
+        document.getElementById('sira-devis-next2').onclick = () => showDevisStep(3);
+        document.getElementById('sira-devis-next3').onclick = () => showDevisStep(4);
+        document.getElementById('sira-devis-prev2').onclick = () => showDevisStep(1);
+        document.getElementById('sira-devis-prev3').onclick = () => showDevisStep(2);
+        document.getElementById('sira-devis-prev4').onclick = () => showDevisStep(3);
+
+        // Soumission (exemple)
+        document.getElementById('sira-devis-form').onsubmit = function(e) {
+            e.preventDefault();
+            alert('Préinscription envoyée !');
+            devisOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+    </script>
+    <div class="sira-devis-overlay" id="sira-devis-overlay">
+        <div class="sira-devis-card">
+            <button class="sira-devis-close" id="sira-devis-close" aria-label="Fermer la préinscription"><i class="fa-solid fa-xmark"></i></button>
+            <div class="sira-devis-content">
+                <div class="sira-stepper">
+                    <div class="sira-step active" data-step="1">1</div>
+                    <div class="sira-step" data-step="2">2</div>
+                    <div class="sira-step" data-step="3">3</div>
+                    <div class="sira-step" data-step="4">4</div>
+                </div>
+                <form id="sira-devis-form">
+                    <!-- Step 1: Participants -->
+                    <div class="sira-form-step active" id="sira-step1">
+                        <h3 class="sira-form-title">Qui participe à ce voyage?</h3>
+                        <div class="sira-quantity-selector">
+                            <div>
+                                <h4>ADULTES</h4>
+                                <p>13 ans et plus</p>
+                            </div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisQuantity('adults', -1)">-</button>
+                                <span id="devis-adults-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisQuantity('adults', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="sira-quantity-selector">
+                            <div>
+                                <h4>ENFANTS</h4>
+                                <p>De 2 à 12 ans</p>
+                            </div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisQuantity('children', -1)">-</button>
+                                <span id="devis-children-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisQuantity('children', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="sira-quantity-selector">
+                            <div>
+                                <h4>BÉBÉ</h4>
+                                <p>- de 2 ans</p>
+                            </div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisQuantity('babies', -1)">-</button>
+                                <span id="devis-babies-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisQuantity('babies', 1)">+</button>
+                            </div>
+                        </div>
+                        <button type="button" class="sira-devis-next-btn" id="sira-devis-next1">SUIVANT</button>
+                    </div>
+                    <!-- Step 2: Hébergement -->
+                    <div class="sira-form-step" id="sira-step2">
+                        <h3 class="sira-form-title">Type d'hébergement</h3>
+                        <p class="sira-form-sub">Passagers restants à affecter: <span id="devis-remaining-passengers">0</span></p>
+                        <div class="sira-quantity-selector">
+                            <div><h4>QUADRUPLE</h4><p>/Personne</p></div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('quad', -1)">-</button>
+                                <span id="devis-quad-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('quad', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="sira-quantity-selector">
+                            <div><h4>TRIPLE</h4><p>/Personne</p></div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('triple', -1)">-</button>
+                                <span id="devis-triple-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('triple', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="sira-quantity-selector">
+                            <div><h4>DOUBLE</h4><p>/Personne</p></div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('double', -1)">-</button>
+                                <span id="devis-double-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('double', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="sira-quantity-selector">
+                            <div><h4>INDIVIDUEL</h4><p>/Personne</p></div>
+                            <div class="sira-quantity-controls">
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('single', -1)">-</button>
+                                <span id="devis-single-count">0</span>
+                                <button type="button" class="sira-quantity-btn" onclick="updateDevisRoom('single', 1)">+</button>
+                            </div>
+                        </div>
+                        <button type="button" class="sira-devis-next-btn" id="sira-devis-next2">SUIVANT</button>
+                        <button type="button" class="sira-devis-prev-btn" id="sira-devis-prev2">PRÉCÉDENT</button>
+                    </div>
+                    <!-- Step 3: Détails de réservation -->
+                    <div class="sira-form-step" id="sira-step3">
+                        <h3 class="sira-form-title">Les détails de votre réservation</h3>
+                        <div class="sira-reservation-details">
+                            <div class="sira-detail-row"><span>Réduction enfants</span><span>-0.00 €</span></div>
+                            <div class="sira-detail-row"><span>Économies réalisées</span><span class="sira-economies">EUR 0.00</span></div>
+                            <div class="sira-detail-row sira-detail-total"><span>Montant</span><span class="sira-montant">EUR 0.00</span></div>
+                            <p class="sira-form-note">Des frais supplémentaires peuvent s'appliquer</p>
+                        </div>
+                        <button type="button" class="sira-devis-next-btn" id="sira-devis-next3">SUIVANT</button>
+                        <button type="button" class="sira-devis-prev-btn" id="sira-devis-prev3">PRÉCÉDENT</button>
+                    </div>
+                    <!-- Step 4: Informations personnelles -->
+                    <div class="sira-form-step" id="sira-step4">
+                        <h3 class="sira-form-title">Détails</h3>
+                        <div class="sira-floating-label-group">
+                            <input type="text" class="sira-floating-label-input" id="devis-fullname" placeholder=" ">
+                            <label class="sira-floating-label">Nom & Prénom</label>
+                        </div>
+                        <div class="sira-floating-label-group">
+                            <input type="text" class="sira-floating-label-input" id="devis-address" placeholder=" ">
+                            <label class="sira-floating-label">Adresse</label>
+                        </div>
+                        <div class="sira-floating-label-group">
+                            <input type="tel" class="sira-floating-label-input" id="devis-phone" placeholder=" ">
+                            <label class="sira-floating-label">Numéro de téléphone</label>
+                        </div>
+                        <div class="sira-floating-label-group">
+                            <input type="email" class="sira-floating-label-input" id="devis-email" placeholder=" ">
+                            <label class="sira-floating-label">E-mail</label>
+                        </div>
+                        <button type="button" class="sira-devis-prev-btn" id="sira-devis-prev4">PRÉCÉDENT</button>
+                        <button type="submit" class="sira-devis-submit-btn">SOUMETTRE</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="sira-devis-bg"></div>
+    </div>
+</body>
+</html> 

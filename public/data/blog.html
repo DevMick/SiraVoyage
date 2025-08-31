@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - SIRA VOYAGE</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tailwind & Custom CSS -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            line-height: 1.1;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 900;
+        }
+        .logo-img {
+            height: 2.5rem; /* 40px pour mobile */
+            max-height: 40px;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 3.5rem; /* 56px pour desktop */
+                max-height: 56px;
+            }
+        }
+        .hero-section {
+            margin-top: 0;
+            padding-top: 80px; /* Hauteur du header */
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #D1D5DB;
+            opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+            background: #0F5132;
+        }
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0F5132;
+            margin-right: 0.8rem;
+            margin-left: 0.8rem;
+            transition: color 0.2s;
+        }
+        .nav-link:last-child {
+            margin-right: 0;
+        }
+        .nav-link:hover {
+            color: #B38F2E;
+        }
+        @media (max-width: 1023px) {
+            .nav-link {
+                margin-right: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 85%;
+            max-width: 340px;
+            background: white;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+            font-size: 0.95rem;
+            padding: 0.75rem 1.1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.18rem;
+            color: #0F5132;
+            background: #F5F5DC;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-menu .flex-col a:hover, .mobile-menu .flex-col button:hover {
+            background: #0F5132;
+            color: #fff;
+        }
+        .mobile-menu .flex-col a:last-child, .mobile-menu .flex-col button:last-child {
+            margin-bottom: 0;
+        }
+        .mobile-menu .flex-col {
+            gap: 0.5rem !important;
+        }
+        .mobile-menu .text-2xl {
+            font-size: 1.5rem;
+        }
+        .mobile-menu .p-6 {
+            padding: 1.5rem 1rem 1rem 1rem;
+        }
+        .mobile-menu .font-bold {
+            font-size: 1.3rem;
+        }
+        /* Afficher le menu hamburger et cacher le menu desktop jusqu'à 1023px */
+        @media (max-width: 1023px) {
+            .md\:flex, .hidden.md\:flex {
+                display: none !important;
+            }
+            #mobile-menu-button {
+                display: block !important;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+        }
+        /* Afficher le menu desktop et cacher le hamburger à partir de 1024px */
+        @media (min-width: 1024px) {
+            .md\:flex {
+                display: flex !important;
+            }
+            #mobile-menu-button, .mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+        header nav {
+            padding-top: 1.25rem !important; /* 20px */
+            padding-bottom: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            header nav {
+                padding-top: 1.75rem !important; /* 28px */
+                padding-bottom: 1.75rem !important;
+            }
+        }
+        @media (max-width: 1023px) {
+            .mobile-menu {
+                display: block !important;
+            }
+            .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+                font-size: 1.25rem;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                margin-bottom: 0.4rem;
+                color: #0F5132;
+                background: #F5F5DC;
+                font-weight: 600;
+                transition: background 0.2s, color 0.2s;
+            }
+        }
+        .blog-card {
+            transition: transform 0.3s ease-in-out;
+        }
+        .blog-card:hover {
+            transform: translateY(-5px);
+        }
+        .category-button {
+            transition: all 0.3s ease-in-out;
+        }
+        .category-button.active {
+            background-color: #0F5132;
+            color: white;
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <nav class="container mx-auto px-4 py-2">
+            <div class="flex items-center justify-between min-h-[48px]">
+                <!-- Branding à gauche sur mobile, centré sur desktop -->
+                <div class="flex-1 flex items-center md:justify-center justify-start">
+                    <a href="/index.html" class="logo-text block text-2xl md:text-3xl font-extrabold text-black select-none" style="letter-spacing: 6px;">
+                        <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                    </a>
+                </div>
+                <!-- Menus à gauche (desktop uniquement) -->
+                <div class="hidden md:flex flex-1 items-center gap-10 md:gap-14 uppercase tracking-wider font-semibold text-base md:text-lg" style="letter-spacing: 2px;">
+                    <a href="/oumra.html" class="text-[#0F5132] nav-link">Oumra</a>
+                    <a href="/hajj.html" class="text-[#0F5132] nav-link">Hajj</a>
+                    <a href="/about.html" class="text-[#0F5132] nav-link">À propos</a>
+                    <a href="/blog.html" class="text-[#0F5132] nav-link">Blog</a>
+                </div>
+                <!-- Bouton Contact à droite (desktop uniquement) -->
+                <div class="hidden md:flex items-center flex-1 justify-end">
+                    <a href="/contact.html" class="bg-[#0F5132] text-white px-6 py-2 rounded-md hover:bg-[#0F5132]/90 transition-all duration-300 text-base font-semibold">
+                        Contact
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-[#0F5132] ml-2" id="mobile-menu-button" aria-label="Ouvrir le menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay md:hidden" id="menu-overlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-2xl font-bold text-[#0F5132]">Menu</span>
+                <button class="text-[#0F5132]" id="close-menu-button" aria-label="Fermer le menu">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <a href="/index.html" class="logo-text block text-xl font-extrabold text-black text-center mb-4" style="letter-spacing: 4px;">
+                    <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                </a>
+                <a href="/oumra.html">Oumra</a>
+                <a href="/hajj.html">Hajj</a>
+                <a href="/about.html">À propos</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="images/kaaba-top.jpg" alt="Kaaba" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative container mx-auto px-4 flex flex-col items-center justify-center text-white text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up">
+                Notre Blog
+            </h1>
+            <p class="text-xl md:text-2xl mb-8" data-aos="fade-up" data-aos-delay="100">
+                Découvrez nos articles et actualités sur le Hajj et la Omra
+            </p>
+        </div>
+    </section>
+
+    <!-- Blog Categories -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <button class="category-button active px-6 py-2 rounded-full border border-[#0F5132] text-[#0F5132]" onclick="filterPosts('all')">
+                    Tous
+                </button>
+                <button class="category-button px-6 py-2 rounded-full border border-[#0F5132] text-[#0F5132]" onclick="filterPosts('hajj')">
+                    Hajj
+                </button>
+                <button class="category-button px-6 py-2 rounded-full border border-[#0F5132] text-[#0F5132]" onclick="filterPosts('omra')">
+                    Omra
+                </button>
+            </div>
+
+            <!-- Blog Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="blog-grid">
+                <!-- Blog Post 1 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="hajj">
+                    <img src="images/1.jpg" alt="Article Hajj" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Hajj</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Bonnes adresses à Makkah et Médine</h3>
+                        <p class="text-gray-600 mb-4">Pendant la Omra ou le Hajj, à Médine ou La Mecque, voici quelques conseils et adresses utiles pour vous restaurer, manger, faire vous courses et...</p>
+                        <a href="/blog/les-bonnes-adresses-des-villes-saintes.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 2 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="hajj">
+                    <img src="images/2.jpg" alt="Article Hajj" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Hajj</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Hajj 2024: Comment s'inscrire via l'application Nusuk</h3>
+                        <p class="text-gray-600 mb-4">Le Hajj 2024 approche à grands pas et cette année, l'Arabie Saoudite a annoncé que le pèlerinage sera nationalisé, ce qui signifie qu'aucune agence ne pourra organiser le voyage de manière...</p>
+                        <a href="/blog/inscription-nusuk-hajj-2024.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 3 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="hajj">
+                    <img src="images/3.jpg" alt="Article Hajj" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Hajj</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Liste des agences agréées pour le Hajj</h3>
+                        <p class="text-gray-600 mb-4">Afin d'accomplir votre Hajj en toute sérénité vous devez bien choisir l'agence qui va organiser votre voyage et vous accompagner tout au long de ce séjour. Voici la liste des agences agréées...</p>
+                        <a href="/blog/liste-des-agences-agreees-pour-le-hajj.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 4 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="hajj">
+                    <img src="images/4.jpg" alt="Article Hajj" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Hajj</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Guide du Hajj et de la Omra</h3>
+                        <p class="text-gray-600 mb-4">Faire son pèlerinage à La Mecque nécessite une préparation afin de pouvoir accomplir les rites du Hajj correctement et tirer tous les bienfaits de ce voyage spirituel que tout Musulman doit accomplir...</p>
+                        <a href="/blog/le-guide-illustre-du-hajj-et-de-la-umra-par-albayt.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 5 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="hajj">
+                    <img src="images/5.jpg" alt="Article Hajj" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Hajj</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Comment préparer son voyage du Hajj</h3>
+                        <p class="text-gray-600 mb-4">Pour beaucoup de Musulmans à travers le monde, le Hajj est le voyage de toute une vie, une étape spirituelle qui donne une nouvelle dimension à leur foi.</p>
+                        <a href="/blog/comment-preparer-son-voyage-du-hajj.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 6 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="hajj">
+                    <img src="images/6.jpg" alt="Article Hajj" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Hajj</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Comment choisir mon agence de voyages pour le Hajj</h3>
+                        <p class="text-gray-600 mb-4">Avec la digitalisation, l'offre pour le Hajj sur le net a connu un très fort développement. Face à la multiplication des agences Hajj, les pèlerins sont très souvent perdus et peuvent malheureusement faire...</p>
+                        <a href="/blog/comment-choisir-mon-agence-de-voyages-pour-le-hajj.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 7 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="omra">
+                    <img src="images/7.jpg" alt="Article Omra" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Omra</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Partir en Omra avec ses enfants : Une expérience spirituelle en famille</h3>
+                        <p class="text-gray-600 mb-4">Partir en Omra est un voyage rempli de dévotion et de spiritualité pour les musulmans du monde entier. Cette expérience unique permet aux fidèles de...</p>
+                        <a href="/blog/partir-en-omra-avec-ses-enfants-une-experience-spirituelle-en-famille.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 8 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="omra">
+                    <img src="images/8.jpg" alt="Article Omra" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Omra</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">La Mecque : la destination prisée des jeunes pour le tourisme éthique et religieux</h3>
+                        <p class="text-gray-600 mb-4">Depuis quelques années, La Mecque attire de plus en plus de jeunes pour le tourisme éthique et religieux. Avec l'essor des réseaux sociaux et des plateformes de voyages, il est devenu plus...</p>
+                        <a href="/blog/la-mecque-la-destination-prisee-des-jeunes-pour-le-tourisme-ethique-et-religieux.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 9 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="omra">
+                    <img src="images/9.jpg" alt="Article Omra" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Omra</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Comment choisir son agence de voyages pour la Omra</h3>
+                        <p class="text-gray-600 mb-4">A l'heure où chacun se prépare pour les vacances d'été, il est important pour ne pas dire primordial de bien choisir son agence de voyages afin que son séjour balnéaire, son safari ou bien...</p>
+                        <a href="/blog/comment-choisir-son-agence-de-voyages-pour-la-omra.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 10 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="omra">
+                    <img src="images/10.jpg" alt="Article Omra" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Omra</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Omra août : Comment profiter pleinement malgré la chaleur intense ?</h3>
+                        <p class="text-gray-600 mb-4">La Omra est un moment spirituel inoubliable pour les musulmans du monde entier, et si vous avez choisi le mois d'août pour accomplir ce pèlerinage sacré, il est essentiel de se préparer adéquatement pour faire...</p>
+                        <a href="/blog/omra-aout-comment-profiter-pleinement-malgre-la-chaleur-intense.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 11 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="omra">
+                    <img src="images/medina3.jpg" alt="Article Omra" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Omra</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Voyage sans mahram pour les femmes</h3>
+                        <p class="text-gray-600 mb-4">La nécessité d'un mahram pour les femmes qui se rendent à La Mecque a un aspect administratif important. En règle générale, une femme doit être accompagnée de son mari pour effectuer...</p>
+                        <a href="/blog/voyage-sans-mahram-pour-les-femmes.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+
+                <!-- Blog Post 12 -->
+                <article class="blog-card bg-white rounded-lg overflow-hidden shadow-lg" data-category="omra">
+                    <img src="images/kaaba-top.jpg" alt="Article Omra" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="text-sm text-[#0F5132]">Omra</span>
+                            <span class="text-sm text-gray-500">•</span>
+                            <span class="text-sm text-gray-500">10 Janvier 2025</span>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2">Assouplissements des restrictions en Arabie Saoudite : Une nouvelle ère pour les pèlerinages et les visites religieuses</h3>
+                        <p class="text-gray-600 mb-4">"La levée des restrictions m'a permis d'accomplir une chose très importante pour moi, la visite des Terres Saintes de l'Islam"</p>
+                        <a href="/blog/assouplissements-des-restrictions-en-arabie-saoudite-une-nouvelle-ere-pour-les-pelerinages-et-les-visites-religieuses.html" class="text-[#0F5132] font-semibold hover:text-[#0F5132]/80 transition-colors">
+                            Lire la suite →
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials and Newsletter Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+           
+            <!-- Newsletter -->
+            <div class="flex flex-col md:flex-row bg-[#F5F5DC] rounded-lg overflow-hidden">
+                <div class="md:w-1/2">
+                    <img src="images/kaaba-top.jpg" alt="Kaaba vue de haut" class="w-full h-full object-cover">
+                </div>
+                <div class="md:w-1/2 p-8">
+                    <h3 class="text-2xl font-bold text-green-800 mb-4">
+                        Abonnez-vous à notre newsletter pour bénéficier de nos meilleures offres !
+                    </h3>
+                    <form class="flex flex-col space-y-4">
+                        <input type="email" placeholder="Votre adresse email" class="p-3 border border-gray-300 rounded-md">
+                        <button class="bg-green-800 text-white py-3 rounded-md hover:bg-green-700 transition-all duration-300">
+                            Envoyer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+     <!-- Social Media Bar -->
+     <div class="border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-snapchat"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold text-[#0F5132] mb-4">Paris</h3>
+                    <p class="text-gray-600">123 Rue de la Paix</p>
+                    <p class="text-gray-600">75002 Paris, France</p>
+                    <p class="text-gray-600 mt-2">+33 1 23 45 67 89</p>
+                </div>
+
+                <!-- Logo and Description -->
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-[#0F5132] mb-2">SIRA VOYAGE</div>
+                    <p class="text-gray-600 uppercase text-sm mb-4">HAJJ OMRA & TOURISME ÉTHIQUE</p>
+                    <p class="text-gray-600">Lun - Ven: 9h - 18h</p>
+                    <p class="text-gray-600">contact@siravoyage.com</p>
+                </div>
+
+                <!-- Links and Payment -->
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <a href="/about.html" class="text-gray-600 hover:text-[#0F5132]">A propos</a>
+                        <a href="/info-pratiques.html" class="text-gray-600 hover:text-[#0F5132]">Info pratiques</a>
+                        <a href="/conditions-de-vente.html" class="text-gray-600 hover:text-[#0F5132]">Conditions de vente</a>
+                        <a href="/faqs.html" class="text-gray-600 hover:text-[#0F5132]">FAQs</a>
+                        <a href="/blog.html" class="text-gray-600 hover:text-[#0F5132]">Blog</a>
+                        <a href="/contact.html" class="text-gray-600 hover:text-[#0F5132]">Contact</a>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <img src="images/paypal.png" alt="PayPal" class="h-8">
+                        <img src="images/stripe.png" alt="Stripe" class="h-8">
+                        <img src="images/visa.png" alt="Visa" class="h-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Call Button -->
+    <button class="fixed bottom-8 right-8 bg-[#0F5132] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-[#0F5132]/90 transition-all duration-300">
+        <i class="fas fa-phone"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Fonction pour filtrer les articles
+        function filterPosts(category) {
+            // Mettre à jour les boutons actifs
+            const buttons = document.querySelectorAll('.category-button');
+            buttons.forEach(button => {
+                if (button.getAttribute('onclick').includes(category)) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // Filtrer les articles
+            const articles = document.querySelectorAll('.blog-card');
+            articles.forEach(article => {
+                if (category === 'all' || article.getAttribute('data-category') === category) {
+                    article.style.display = 'block';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        }
+
+        // Script pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            closeMenuButton.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+        });
+    </script>
+</body>
+</html> 

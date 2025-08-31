@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hajj - SIRA VOYAGE</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    <!-- AOS CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Tailwind & Custom CSS -->
+    <link rel="stylesheet" href="/css/output.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 6px;
+            font-weight: 900;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            line-height: 1.1;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 900;
+        }
+        .logo-img {
+            height: 2.5rem; /* 40px pour mobile */
+            max-height: 40px;
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 3.5rem; /* 56px pour desktop */
+                max-height: 56px;
+            }
+        }
+        .hero-section {
+            margin-top: 0;
+            padding-top: 80px; /* Hauteur du header */
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .swiper-pagination-bullet {
+            width: 10px;
+            height: 10px;
+            background: #D1D5DB;
+            opacity: 1;
+        }
+        .swiper-pagination-bullet-active {
+            background: #0F5132;
+        }
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #0F5132;
+            margin-right: 0.8rem;
+            margin-left: 0.8rem;
+            transition: color 0.2s;
+        }
+        .nav-link:last-child {
+            margin-right: 0;
+        }
+        .nav-link:hover {
+            color: #B38F2E;
+        }
+        @media (max-width: 1023px) {
+            .nav-link {
+                margin-right: 0.5rem;
+                margin-left: 0.5rem;
+            }
+        }
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            height: 100vh;
+            width: 85%;
+            max-width: 340px;
+            background: white;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.08);
+        }
+        .mobile-menu.active {
+            right: 0;
+        }
+        .menu-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 999;
+        }
+        .menu-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+            font-size: 0.95rem;
+            padding: 0.75rem 1.1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 0.18rem;
+            color: #0F5132;
+            background: #F5F5DC;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: background 0.2s, color 0.2s;
+        }
+        .mobile-menu .flex-col a:hover, .mobile-menu .flex-col button:hover {
+            background: #0F5132;
+            color: #fff;
+        }
+        .mobile-menu .flex-col a:last-child, .mobile-menu .flex-col button:last-child {
+            margin-bottom: 0;
+        }
+        .mobile-menu .flex-col {
+            gap: 0.5rem !important;
+        }
+        .mobile-menu .text-2xl {
+            font-size: 1.5rem;
+        }
+        .mobile-menu .p-6 {
+            padding: 1.5rem 1rem 1rem 1rem;
+        }
+        .mobile-menu .font-bold {
+            font-size: 1.3rem;
+        }
+        /* Afficher le menu hamburger et cacher le menu desktop jusqu'à 1023px */
+        @media (max-width: 1023px) {
+            .md\:flex, .hidden.md\:flex {
+                display: none !important;
+            }
+            #mobile-menu-button {
+                display: block !important;
+            }
+            .mobile-menu {
+                display: block !important;
+            }
+        }
+        /* Afficher le menu desktop et cacher le hamburger à partir de 1024px */
+        @media (min-width: 1024px) {
+            .md\:flex {
+                display: flex !important;
+            }
+            #mobile-menu-button, .mobile-menu, .menu-overlay {
+                display: none !important;
+            }
+        }
+        header nav {
+            padding-top: 1.25rem !important; /* 20px */
+            padding-bottom: 1.25rem !important;
+        }
+        @media (min-width: 768px) {
+            header nav {
+                padding-top: 1.75rem !important; /* 28px */
+                padding-bottom: 1.75rem !important;
+            }
+        }
+        @media (max-width: 1023px) {
+            .mobile-menu {
+                display: block !important;
+            }
+            .mobile-menu .flex-col a, .mobile-menu .flex-col button {
+                font-size: 1.25rem;
+                padding: 1rem 1.5rem;
+                border-radius: 0.5rem;
+                margin-bottom: 0.4rem;
+                color: #0F5132;
+                background: #F5F5DC;
+                font-weight: 600;
+                transition: background 0.2s, color 0.2s;
+            }
+        }
+        /* Styles spécifiques à la section AlBayt */
+        .albayt-section {
+            padding: 40px 0;
+        }
+        /* Style spécifique pour la deuxième section */
+        .albayt-section:nth-of-type(3) {
+            background-color: #F9FAFB;
+        }
+        .albayt-paragraph {
+            margin-bottom: 16px;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+            text-align: justify;
+        }
+        .albayt-container {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            gap: 30px;
+        }
+        .albayt-content {
+            flex: 1;
+        }
+        .albayt-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .albayt-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .albayt-title {
+            color: #3e501c;
+            font-size: 28px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        /* Styles des boutons de filtre */
+        .filter-button {
+            padding: 0.75rem 2rem;
+            border-radius: 9999px;
+            font-weight: 500;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: #000;
+        }
+        .filter-button:hover:not(.active) {
+            color: #0F5132;
+        }
+        .filter-button.active {
+            background-color: #2B3341;
+            color: white;
+        }
+        /* Responsive */
+        @media (max-width: 768px) {
+            .albayt-container {
+                flex-direction: column;
+            }
+            .albayt-content {
+                margin-bottom: 20px;
+            }
+            .filter-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body class="font-sans">
+    <!-- Header -->
+    <header class="fixed w-full bg-white shadow-md z-50">
+        <nav class="container mx-auto px-4 py-2">
+            <div class="flex items-center justify-between min-h-[48px]">
+                <!-- Branding à gauche sur mobile, centré sur desktop -->
+                <div class="flex-1 flex items-center md:justify-center justify-start">
+                    <a href="/index.html" class="logo-text block text-2xl md:text-3xl font-extrabold text-black select-none" style="letter-spacing: 6px;">
+                        <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                    </a>
+                </div>
+                <!-- Menus à gauche (desktop uniquement) -->
+                <div class="hidden md:flex flex-1 items-center gap-10 md:gap-14 uppercase tracking-wider font-semibold text-base md:text-lg" style="letter-spacing: 2px;">
+                    <a href="/oumra.html" class="text-[#0F5132] nav-link">Oumra</a>
+                    <a href="/hajj.html" class="text-[#0F5132] nav-link">Hajj</a>
+                    <a href="/about.html" class="text-[#0F5132] nav-link">À propos</a>
+                    <a href="/blog.html" class="text-[#0F5132] nav-link">Blog</a>
+                </div>
+                <!-- Bouton Contact à droite (desktop uniquement) -->
+                <div class="hidden md:flex items-center flex-1 justify-end">
+                    <a href="/contact.html" class="bg-[#0F5132] text-white px-6 py-2 rounded-md hover:bg-[#0F5132]/90 transition-all duration-300 text-base font-semibold">
+                        Contact
+                    </a>
+                </div>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-[#0F5132] ml-2" id="mobile-menu-button" aria-label="Ouvrir le menu">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="menu-overlay md:hidden" id="menu-overlay"></div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu md:hidden">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <span class="text-2xl font-bold text-[#0F5132]">Menu</span>
+                <button class="text-[#0F5132]" id="close-menu-button" aria-label="Fermer le menu">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col">
+                <a href="/index.html" class="logo-text block text-xl font-extrabold text-black text-center mb-4" style="letter-spacing: 4px;">
+                    <span style="color:#B38F2E;">SIRA</span> VOYAGE
+                </a>
+                <a href="/oumra.html">Oumra</a>
+                <a href="/hajj.html">Hajj</a>
+                <a href="/about.html">À propos</a>
+                <a href="/blog.html">Blog</a>
+                <a href="/contact.html">Contact</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <!-- Background Image -->
+        <div class="absolute inset-0">
+            <img src="images/1.jpg" alt="Kaaba" class="w-full h-full object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+        </div>
+
+        <!-- Content -->
+        <div class="relative container mx-auto px-4 flex flex-col items-center justify-center text-white text-center">
+            <!-- Title -->
+            <h1 class="text-4xl md:text-6xl font-bold mb-4" data-aos="fade-up">
+                HAJJ
+            </h1>
+            <!-- Subtitles -->
+            <p class="text-2xl md:text-3xl mb-4" data-aos="fade-up" data-aos-delay="100">
+                Vivez pleinement le mois de Ramadan avec Sira Voyage.
+            </p>
+            <p class="text-lg md:text-xl mb-2" data-aos="fade-up" data-aos-delay="200">
+                Une équipe expérimentée à votre disposition.
+            </p>
+            <p class="text-lg md:text-xl mb-2" data-aos="fade-up" data-aos-delay="250">
+                Des assistantes sociales qui prennent soin de vous et de vos proches.
+            </p>
+            <p class="text-lg md:text-xl mb-2" data-aos="fade-up" data-aos-delay="300">
+                Un hébergement dans les meilleurs hôtels 5 étoiles à moins de 900 mètres de la mosquée sainte Nabawiya et de la mosquée sacrée Haram.
+            </p>
+            <p class="text-lg md:text-xl mb-8" data-aos="fade-up" data-aos-delay="350">
+                Nous créons des expériences uniques et inoubliables en Côte d'Ivoire et à travers le monde.
+            </p>
+            <!-- Les boutons Oumra, Oumra Ramadhan, Hajj ont été supprimés ici -->
+        </div>
+    </section>
+   
+
+    <!-- Informations sur le Hajj -->
+    <section class="py-16 bg-gradient-to-b from-white to-[#F5F5DC]">
+      <div class="container mx-auto px-4 max-w-5xl">
+        <!-- Introduction -->
+        <div class="mb-12 text-center">
+          <h2 class="text-4xl md:text-5xl font-bold text-[#0F5132] mb-4">Informations sur le Hajj</h2>
+          <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto">
+            Le Hajj, ou grand pèlerinage, est l'un des cinq piliers de l'Islam. Contrairement à la Omra qui peut être accomplie tout au long de l'année, le Hajj se déroule pendant des dates spécifiques du mois de Dhul-Hijja, le dernier mois du calendrier islamique.
+          </p>
+            </div>
+        <!-- Comparatif Hajj vs Omra -->
+        <div class="flex flex-col md:flex-row gap-4 mb-16">
+          <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center flex-1">
+            <h3 class="text-2xl font-bold text-[#0F5132] mb-4 flex items-center"><i class="fas fa-kaaba mr-3 text-[#B38F2E]"></i>Hajj</h3>
+            <ul class="text-gray-700 space-y-3 w-full">
+              <li><span class="font-semibold text-[#0F5132]">Obligation religieuse :</span> Obligatoire une fois dans la vie pour tout musulman adulte qui en a les moyens.</li>
+              <li><span class="font-semibold text-[#0F5132]">Période :</span> Uniquement du 8 au 13 Dhul-Hijja.</li>
+              <li><span class="font-semibold text-[#0F5132]">Durée :</span> 5 à 6 jours, rites nombreux et complexes.</li>
+              <li><span class="font-semibold text-[#0F5132]">Rites spécifiques :</span> Arafat, Mina, lapidation, sacrifice, etc.</li>
+            </ul>
+            </div>
+          <div class="bg-white rounded-2xl shadow-lg p-8 flex flex-col items-center flex-1">
+            <h3 class="text-2xl font-bold text-[#0F5132] mb-4 flex items-center"><i class="fas fa-mosque mr-3 text-[#B38F2E]"></i>Omra</h3>
+            <ul class="text-gray-700 space-y-3 w-full">
+              <li><span class="font-semibold text-[#0F5132]">Obligation religieuse :</span> Recommandée mais non obligatoire.</li>
+              <li><span class="font-semibold text-[#0F5132]">Période :</span> Toute l'année (sauf jours spécifiques).</li>
+              <li><span class="font-semibold text-[#0F5132]">Durée :</span> Environ 3 heures, rites plus simples.</li>
+              <li><span class="font-semibold text-[#0F5132]">Rites spécifiques :</span> Tawaf, Sa'i, coupe des cheveux.</li>
+            </ul>
+        </div>
+            </div>
+        <!-- Étapes du Hajj (Accordéon) -->
+        <div class="mb-16">
+          <h3 class="text-2xl font-bold text-[#0F5132] mb-8 text-center">Les principales étapes du Hajj</h3>
+          <div class="space-y-4" id="hajj-steps-accordion">
+            <!-- Étape 1 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step1')">
+                <span class="font-semibold">Ihram</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step1-icon"></i>
+                </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step1-content">
+                <p>Comme pour la Omra, le pèlerin entre en état de sacralisation en portant des vêtements spécifiques et en prononçant l'intention d'accomplir le Hajj.</p>
+              </div>
+            </div>
+            <!-- Étape 2 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step2')">
+                <span class="font-semibold">Tawaf d'arrivée</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step2-icon"></i>
+                </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step2-content">
+                <p>Circumambulation autour de la Kaaba à l'arrivée à La Mecque.</p>
+              </div>
+            </div>
+            <!-- Étape 3 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step3')">
+                <span class="font-semibold">Sa'i</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step3-icon"></i>
+                </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step3-content">
+                <p>Déplacement entre les collines d'As-Safa et Al-Marwa (comme pour la Omra).</p>
+              </div>
+            </div>
+            <!-- Étape 4 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step4')">
+                <span class="font-semibold">Station à Arafat (Wuquf)</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step4-icon"></i>
+                </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step4-content">
+                <p>Le 9 Dhul-Hijja, les pèlerins se rassemblent sur le mont Arafat pour prier et demander pardon à Allah. C'est l'étape la plus importante du Hajj.</p>
+            </div>
+            </div>
+            <!-- Étape 5 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step5')">
+                <span class="font-semibold">Muzdalifa</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step5-icon"></i>
+              </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step5-content">
+                <p>Après le coucher du soleil, les pèlerins se rendent à Muzdalifa pour y passer la nuit et collecter des petits cailloux pour la lapidation.</p>
+              </div>
+            </div>
+            <!-- Étape 6 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step6')">
+                <span class="font-semibold">Mina et lapidation</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step6-icon"></i>
+              </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step6-content">
+                <p>Les pèlerins se rendent à Mina pour lapider les stèles représentant Satan.</p>
+              </div>
+            </div>
+            <!-- Étape 7 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step7')">
+                <span class="font-semibold">Sacrifice</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step7-icon"></i>
+              </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step7-content">
+                <p>Sacrifice d'un animal (généralement un mouton) en commémoration du sacrifice d'Abraham.</p>
+              </div>
+            </div>
+            <!-- Étape 8 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step8')">
+                <span class="font-semibold">Tawaf Al-Ifadha</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step8-icon"></i>
+              </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step8-content">
+                <p>Une autre circumambulation autour de la Kaaba.</p>
+              </div>
+            </div>
+            <!-- Étape 9 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step9')">
+                <span class="font-semibold">Retour à Mina</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step9-icon"></i>
+              </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step9-content">
+                <p>Les pèlerins retournent à Mina pour les jours de Tachriq (11-13 Dhul-Hijja) et continuent la lapidation.</p>
+              </div>
+            </div>
+            <!-- Étape 10 -->
+            <div class="border border-[#0F5132] rounded-lg overflow-hidden">
+              <button class="w-full px-6 py-4 text-left bg-[#0F5132] text-white flex justify-between items-center hover:bg-[#0F5132]/90 transition-all duration-300" onclick="toggleHajjAccordion('hajj-step10')">
+                <span class="font-semibold">Tawaf d'adieu</span>
+                <i class="fas fa-chevron-down transition-transform duration-300" id="hajj-step10-icon"></i>
+              </button>
+              <div class="hidden px-6 py-4 bg-white" id="hajj-step10-content">
+                <p>Avant de quitter La Mecque, les pèlerins effectuent un dernier Tawaf autour de la Kaaba.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Supports de Communication HAJJ -->
+    <section class="py-16 bg-[#F5F5DC]">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <!-- En-tête -->
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold text-[#0F5132] mb-4" data-aos="fade-up">
+                        HAJJ 2025
+                    </h2>
+                    <p class="text-xl md:text-2xl text-[#B38F2E] mb-6" data-aos="fade-up" data-aos-delay="100">
+                        Vivez pleinement le Hajj avec Sira Voyage
+                    </p>
+                </div>
+
+                <!-- Services et Points Forts -->
+                <div class="flex flex-col md:flex-row gap-8 mb-16">
+                    <!-- Services Inclus -->
+                    <div class="flex-1 bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center" data-aos="fade-right">
+                        <!-- Bandeau icône -->
+                        <div class="w-full flex justify-center mb-4">
+                            <div class="w-3/4 md:w-2/3 h-6 bg-[#0F5132] rounded-full flex items-center justify-center">
+                                <i class="fas fa-clipboard-check text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#0F5132] mb-6 text-center">Services Inclus</h3>
+                        <ul class="space-y-4 text-gray-700 w-full">
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Conférence et formation sur le Hajj avant le départ</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Tenue Ihram pour les hommes</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Uniforme national</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Gadgets du pèlerin et journal du pèlerin</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Vol aller-retour</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Transferts aéroport hôtel</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Transfert entre Médine et La Mecque</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Démarches pour l'obtention de visa</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Hébergement à La Mecque et Médine</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Petit-déjeuner inclus</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Visites historiques à Médine : Mont Uhud, Mosquée Quba</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Visites historiques à la Mecque : Jabal An-Nour, Jabal At-Thawr</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Accompagnement d'un guide religieux tout au long du séjour</span></li>
+                            <li class="flex items-start"><i class="fas fa-check text-[#B38F2E] mt-1 mr-3"></i><span>Suivi d'une assistante sociale</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Points Forts -->
+                    <div class="flex-1 bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center" data-aos="fade-left">
+                        <!-- Bandeau icône -->
+                        <div class="w-full flex justify-center mb-4">
+                            <div class="w-3/4 md:w-2/3 h-6 bg-[#0F5132] rounded-full flex items-center justify-center">
+                                <i class="fas fa-star text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold text-[#0F5132] mb-6 text-center">Points Forts</h3>
+                        <ul class="space-y-4 text-gray-700 w-full">
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Équipe expérimentée et assistantes sociales à disposition</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Hébergement 5 étoiles à moins de 900m des mosquées</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Expériences uniques et inoubliables</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Accompagnement personnalisé</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Formation et préparation avant le départ</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Support administratif et logistique complet</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Guides religieux francophones</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Assistance 24/7</span></li>
+                            <li class="flex items-start"><i class="fas fa-star text-[#B38F2E] mt-1 mr-3"></i><span>Respect des normes sanitaires et de sécurité</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Prix et Contact -->
+                <div class="bg-[#0F5132] rounded-2xl shadow-xl p-8 mb-16 text-white" data-aos="fade-up">
+                    <div class="text-center mb-8">
+                        <p class="text-2xl font-bold mb-4">Départ unique pour la saison du Hajj 2025</p>
+                        <p class="text-4xl font-bold text-[#B38F2E]">à partir de 4.980.000 XOF</p>
+                    </div>
+                    <div class="text-center">
+                        <p class="text-xl mb-6">Durée du séjour : 26 nuits (3 nuits à Médine, 23 nuits à la Mecque) +/- 3 jours</p>
+                        <div class="flex flex-wrap justify-center gap-4">
+                            <a href="tel:+2250545516269" class="bg-white text-[#0F5132] px-8 py-4 rounded-full hover:bg-[#B38F2E] hover:text-white transition-all duration-300 flex items-center">
+                                <i class="fas fa-phone mr-3"></i>
+                                <span>+225 05 45 51 62 69</span>
+                            </a>
+                            <a href="https://wa.me/2250545516269" class="bg-white text-[#0F5132] px-8 py-4 rounded-full hover:bg-[#B38F2E] hover:text-white transition-all duration-300 flex items-center">
+                                <i class="fab fa-whatsapp mr-3"></i>
+                                <span>WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Représentants Locaux -->
+    <section class="mb-16" data-aos="fade-up">
+        <div class="container mx-auto px-4 max-w-6xl">
+            <h3 class="text-2xl font-bold text-[#0F5132] mb-8 text-center">Nos Représentants en Côte d'Ivoire</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <h4 class="font-bold text-[#0F5132] text-lg mb-2">Abobo</h4>
+                    <p class="text-gray-700 mb-2">Imam Doumbia Amara</p>
+                    <a href="tel:+2250707697647" class="text-[#B38F2E] hover:text-[#0F5132] transition-colors">
+                        +225 07 07 69 76 47
+                    </a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <h4 class="font-bold text-[#0F5132] text-lg mb-2">Divo</h4>
+                    <p class="text-gray-700 mb-2">Hadja Kanaté Kady</p>
+                    <a href="tel:+2250707789916" class="text-[#B38F2E] hover:text-[#0F5132] transition-colors">
+                        +225 07 07 78 99 16
+                    </a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <h4 class="font-bold text-[#0F5132] text-lg mb-2">Bouaké</h4>
+                    <p class="text-gray-700 mb-2">El Hajj Koné Mohamed</p>
+                    <a href="tel:+2250707536606" class="text-[#B38F2E] hover:text-[#0F5132] transition-colors">
+                        +225 07 07 53 66 06
+                    </a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <h4 class="font-bold text-[#0F5132] text-lg mb-2">Gagnoa</h4>
+                    <p class="text-gray-700 mb-2">M. Koné Mamadou</p>
+                    <a href="tel:+2250707006567" class="text-[#B38F2E] hover:text-[#0F5132] transition-colors">
+                        +225 07 07 00 65 67
+                    </a>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
+                    <h4 class="font-bold text-[#0F5132] text-lg mb-2">Mankono</h4>
+                    <p class="text-gray-700 mb-2">M. Bamba Lacina</p>
+                    <a href="tel:+2250101382126" class="text-[#B38F2E] hover:text-[#0F5132] transition-colors">
+                        +225 01 01 38 21 26
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coordonnées -->
+    <section class="text-center bg-white rounded-2xl shadow-xl p-8 mb-16 max-w-6xl mx-auto" data-aos="fade-up">
+        <div class="space-y-4">
+            <p class="text-lg">
+                <i class="fas fa-envelope text-[#B38F2E] mr-2"></i>
+                𝑬-𝒎𝒂𝒊𝒍 : 𝒔𝒊𝒓𝒂𝒗𝒐𝒚𝒂𝒈𝒆23@𝒈𝒎𝒂𝒊𝒍.𝒄𝒐𝒎
+            </p>
+            <p class="text-lg">
+                <i class="fas fa-map-marker-alt text-[#B38F2E] mr-2"></i>
+                𝑨𝒅𝒓𝒆𝒔𝒔𝒆 siège social : 𝑨𝒃𝒊𝒅𝒋𝒂𝒏 - 𝑪𝒐𝒄𝒐𝒅𝒚 𝑹𝒊𝒗𝒊𝒆𝒓𝒂 3, 𝑩𝒐𝒏𝒐𝒖𝒎𝒊𝒏 𝑹𝒐𝒏𝒅-𝒑𝒐𝒊𝒏𝒕 𝑪𝒐𝒏 𝒏𝒐𝒓𝒅, 𝒅𝒊𝒓𝒄𝒕𝒊𝒐𝒏 𝑨𝒃𝒊𝒅𝒋𝒂𝒏 𝑴𝒂𝒍𝒍 𝑭𝒊𝒏 𝒅𝒐𝒔 𝒅'𝒂𝒏𝒆 𝒂 𝒈𝒂𝒖𝒄𝒆
+            </p>
+        </div>
+    </section>
+    </section>
+
+
+     <!-- Social Media Bar -->
+     <div class="border-t border-gray-200 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center space-x-6">
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-youtube"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-snapchat"></i>
+                </a>
+                <a href="#" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 hover:bg-green-800 hover:text-white transition-all duration-300">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+  
+    <!-- Footer -->
+    <footer class="bg-gray-50 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-xl font-semibold text-green-800 mb-4">Paris</h3>
+                    <p class="text-gray-600">123 Rue de la Paix</p>
+                    <p class="text-gray-600">75002 Paris, France</p>
+                    <p class="text-gray-600 mt-2">+33 1 23 45 67 89</p>
+                </div>
+
+                <!-- Logo and Description -->
+                <div class="text-center">
+                    <div class="text-2xl font-bold text-green-800 mb-2">SIRA VOYAGE</div>
+                    <p class="text-gray-600 uppercase text-sm mb-4">HAJJ OMRA & TOURISME ÉTHIQUE</p>
+                    <p class="text-gray-600">Lun - Ven: 9h - 18h</p>
+                    <p class="text-gray-600">contact@siravoyage.com</p>
+                </div>
+
+                <!-- Links and Payment -->
+                <div>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <a href="/about.html" class="text-gray-600 hover:text-green-800">A propos</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">Info pratiques</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">Conditions de vente</a>
+                        <a href="#" class="text-gray-600 hover:text-green-800">FAQs</a>
+                        <a href="/blog.html" class="text-gray-600 hover:text-green-800">Blog</a>
+                        <a href="/contact.html" class="text-gray-600 hover:text-[#0F5132]">Contact</a>
+                    </div>
+                    <div class="flex justify-end space-x-4">
+                        <img src="images/paypal.png" alt="PayPal" class="h-8">
+                        <img src="images/stripe.png" alt="Stripe" class="h-8">
+                        <img src="images/visa.png" alt="Visa" class="h-8">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating Call Button -->
+    <button class="fixed bottom-8 right-8 bg-green-800 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover:bg-green-700 transition-all duration-300">
+        <i class="fas fa-phone"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+
+        // Tableau des images disponibles
+        const availableImages = ['1', '2', '3', '4', '5', '6', '9', '10', 'medina3'];
+
+        // Fonction pour obtenir une image aléatoire
+        function getRandomImage() {
+            const randomIndex = Math.floor(Math.random() * availableImages.length);
+            return availableImages[randomIndex];
+        }
+
+        // Fonction pour formater la date
+        function formatDate(dateString) {
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('fr-FR', options);
+        }
+
+        // Initialisation du Swiper
+        const packagesSwiper = new Swiper('.packages-swiper', {
+            slidesPerView: 1,
+            spaceBetween: 30,
+            loop: false,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                640: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 3,
+                }
+            }
+        });
+
+        // Variable pour stocker toutes les formules
+        let allFormulas = [];
+
+        // Fonction pour charger les formules
+        async function loadFormulas() {
+            try {
+                console.log('Début du chargement des formules...');
+                const response = await fetch('/api/formulas');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log('Données brutes reçues:', data);
+                
+                // S'assurer que data est un tableau et contient toutes les formules
+                allFormulas = Array.isArray(data) ? data : [];
+                
+                // Vérifier si les formules sont bien présentes
+                const standardShiftingFormulas = allFormulas.filter(formula => 
+                    formula.name === 'ITHRAA AL KHAIR 75' || formula.name === 'ITHRAA AL KHAIR 83'
+                );
+                console.log('Formules STANDART SHIFTING disponibles:', standardShiftingFormulas);
+                
+                // Activer le filtre "STANDARD" par défaut
+                filterFormulas('standard');
+            } catch (error) {
+                console.error('Erreur lors du chargement des formules:', error);
+                document.getElementById('formulas-container').innerHTML = 
+                    '<div class="text-center w-full text-red-500">Erreur lors du chargement des formules.</div>';
+            }
+        }
+
+        // Fonction pour filtrer les formules
+        function filterFormulas(type) {
+            console.log('Type de filtre sélectionné:', type);
+            console.log('Toutes les formules disponibles:', allFormulas);
+
+            // Mettre à jour les styles des boutons
+            const buttons = document.querySelectorAll('.filter-button');
+            buttons.forEach(button => {
+                if (button.getAttribute('onclick').includes(type)) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+            });
+
+            // Filtrer les formules selon le type sélectionné
+            let filteredFormulas = [];
+            
+            if (type === 'standard') {
+                const standardNames = ['ITHRAA AL KHAIR 119', 'ITHRAA AL KHAIR 117', 'ITHRAA AL KHAIR 111'];
+                filteredFormulas = allFormulas.filter(formula => standardNames.includes(formula.name));
+                console.log('Formules STANDARD filtrées:', filteredFormulas);
+            } else if (type === 'premium') {
+                const premiumNames = ['ITHRAA AL KHAIR 114', 'ITHRAA AL KHAIR 115'];
+                filteredFormulas = allFormulas.filter(formula => premiumNames.includes(formula.name));
+                console.log('Formules PREMIUM filtrées:', filteredFormulas);
+            } else if (type === 'luxury-shifting') {
+                const luxuryNames = ['ITHRAA AL KHAIR 5'];
+                filteredFormulas = allFormulas.filter(formula => luxuryNames.includes(formula.name));
+                console.log('Formules LUXURY SHIFTING filtrées:', filteredFormulas);
+            } else if (type === 'standard-shifting') {
+                const standardShiftingNames = ['ITHRAA AL KHAIR 75', 'ITHRAA AL KHAIR 83'];
+                filteredFormulas = allFormulas.filter(formula => standardShiftingNames.includes(formula.name));
+                console.log('Formules STANDART SHIFTING filtrées:', filteredFormulas);
+            }
+
+            // Mettre à jour le conteneur des formules
+            const container = document.getElementById('formulas-container');
+            if (filteredFormulas && filteredFormulas.length > 0) {
+                const htmlContent = filteredFormulas.map(formula => createFormulaCard(formula)).join('');
+                console.log('HTML généré:', htmlContent);
+                container.innerHTML = htmlContent;
+            } else {
+                console.log('Aucune formule trouvée pour le type:', type);
+                container.innerHTML = '<div class="text-center w-full">Aucune formule disponible pour ce type.</div>';
+            }
+
+            // Réinitialiser et mettre à jour le Swiper
+            if (packagesSwiper) {
+                packagesSwiper.update();
+                packagesSwiper.slideTo(0);
+            }
+        }
+
+        // Fonction pour créer une carte de formule
+        function createFormulaCard(formula) {
+            return `
+                <div class="swiper-slide">
+                    <div class="bg-white rounded-lg overflow-hidden shadow-lg">
+                        <div class="relative">
+                            <img src="images/${formula.id}.jpg" alt="${formula.name}" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm">
+                                Durée ${formula.duration} jours
+                            </div>
+                            <div class="absolute bottom-4 right-4 bg-[#B38F2E] text-white px-3 py-1 rounded-full text-sm">
+                                ${new Date(formula.departureDate).toLocaleDateString('fr-FR')}
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h3 class="text-xl font-semibold text-gray-800">${formula.name}</h3>
+                                </div>
+                                <div class="text-right">
+                                    <p class="text-sm text-gray-500">à partir de</p>
+                                    <span class="text-[#B38F2E] font-bold text-xl">${formula.price}€</span>
+                                </div>
+                            </div>
+                            <button class="w-full bg-[#0F5132] text-white py-3 rounded-md hover:bg-[#0F5132]/90 hover:scale-[1.02] hover:shadow-lg transform transition-all duration-300 ease-in-out" 
+                                    onclick="window.location.href='/formula-details.html?id=${formula.id}&type=hajj'">
+                                Réserver
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Charger les formules au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            // S'assurer que le bouton STANDARD est actif par défaut
+            const standardButton = document.querySelector('.filter-button[onclick="filterFormulas(\'standard\')"]');
+            if (standardButton) {
+                standardButton.classList.add('active');
+            }
+            // Charger les formules
+            loadFormulas();
+        });
+
+        // Script pour le menu mobile
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const closeMenuButton = document.getElementById('close-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuOverlay = document.getElementById('menu-overlay');
+
+            function toggleMenu() {
+                mobileMenu.classList.toggle('active');
+                menuOverlay.classList.toggle('active');
+                document.body.style.overflow = mobileMenu.classList.contains('active') ? 'hidden' : '';
+            }
+
+            mobileMenuButton.addEventListener('click', toggleMenu);
+            closeMenuButton.addEventListener('click', toggleMenu);
+            menuOverlay.addEventListener('click', toggleMenu);
+        });
+
+        // Accordéon Hajj Steps
+        function toggleHajjAccordion(id) {
+          const content = document.getElementById(id + '-content');
+          const icon = document.getElementById(id + '-icon');
+          content.classList.toggle('hidden');
+          if (content.classList.contains('hidden')) {
+            icon.style.transform = 'rotate(0deg)';
+          } else {
+            icon.style.transform = 'rotate(180deg)';
+          }
+        }
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

@@ -1,0 +1,266 @@
+[
+    {
+        "id": "1",
+        "name": "Omra Janvier - Paris",
+        "tripType": "Omra",
+        "mois": "Janvier",
+        "departureCity": "Paris",
+        "departureDate": "2024-01-15",
+        "returnDate": "2024-01-25",
+        "duration": 10,
+        "price": 1490,
+        "formula": "Confort",
+        "makkahHotel": "VOCO",
+        "medinaHotel": "VOCO",
+        "makkahNights": 5,
+        "medinaNights": 5,
+        "airline": {
+            "name": "Saudia",
+            "logo": "/images/saudia-logo.png"
+        },
+        "flights": {
+            "departure": {
+                "time": "12:00",
+                "date": "2024-01-15"
+            },
+            "return": {
+                "time": "18:00",
+                "date": "2024-01-25"
+            }
+        },
+        "accommodation": {
+            "makkah": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 100,
+                "image": "/images/voco-makkah.jpg"
+            },
+            "medina": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 200,
+                "image": "/images/voco-medina.jpg"
+            }
+        },
+        "program": [
+            {
+                "day": 1,
+                "title": "Départ de Paris",
+                "description": "Rendez-vous à l'aéroport de Paris Charles de Gaulle"
+            }
+        ],
+        "details": [
+            {
+                "icon": "plane",
+                "title": "Vol direct",
+                "description": "Paris - Jeddah"
+            }
+        ],
+        "images": [
+            {
+                "url": "/images/1.jpg",
+                "alt": "Kaaba"
+            }
+        ]
+    },
+    {
+        "id": "5",
+        "name": "ITHRAA AL KHAIR 119",
+        "tripType": "Hajj",
+        "mois": "Juin",
+        "departureCity": "Paris",
+        "departureDate": "2024-06-10",
+        "returnDate": "2024-06-30",
+        "duration": 20,
+        "price": 7786,
+        "formula": "Confort",
+        "makkahHotel": "VOCO",
+        "medinaHotel": "VOCO",
+        "makkahNights": 10,
+        "medinaNights": 10,
+        "airline": {
+            "name": "Saudia",
+            "logo": "/images/saudia-logo.png"
+        },
+        "flights": {
+            "departure": {
+                "time": "12:00",
+                "date": "2024-06-10"
+            },
+            "return": {
+                "time": "18:00",
+                "date": "2024-06-30"
+            }
+        },
+        "accommodation": {
+            "makkah": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 100,
+                "image": "/images/voco-makkah.jpg"
+            },
+            "medina": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 200,
+                "image": "/images/voco-medina.jpg"
+            }
+        }
+    },
+    {
+        "id": "6",
+        "name": "ITHRAA AL KHAIR 117",
+        "tripType": "Hajj",
+        "mois": "Juin",
+        "departureCity": "Paris",
+        "departureDate": "2024-06-10",
+        "returnDate": "2024-06-30",
+        "duration": 20,
+        "price": 7786,
+        "formula": "Confort",
+        "makkahHotel": "VOCO",
+        "medinaHotel": "VOCO",
+        "makkahNights": 10,
+        "medinaNights": 10,
+        "airline": {
+            "name": "Saudia",
+            "logo": "/images/saudia-logo.png"
+        },
+        "flights": {
+            "departure": {
+                "time": "12:00",
+                "date": "2024-06-10"
+            },
+            "return": {
+                "time": "18:00",
+                "date": "2024-06-30"
+            }
+        },
+        "accommodation": {
+            "makkah": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 100,
+                "image": "/images/voco-makkah.jpg"
+            },
+            "medina": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 200,
+                "image": "/images/voco-medina.jpg"
+            }
+        }
+    },
+    {
+        "id": "7",
+        "name": "ITHRAA AL KHAIR 111",
+        "tripType": "Hajj",
+        "mois": "Juin",
+        "departureCity": "Paris",
+        "departureDate": "2024-06-10",
+        "returnDate": "2024-06-30",
+        "duration": 20,
+        "price": 7786,
+        "formula": "Confort",
+        "makkahHotel": "VOCO",
+        "medinaHotel": "VOCO",
+        "makkahNights": 10,
+        "medinaNights": 10,
+        "airline": {
+            "name": "Saudia",
+            "logo": "/images/saudia-logo.png"
+        },
+        "flights": {
+            "departure": {
+                "time": "12:00",
+                "date": "2024-06-10"
+            },
+            "return": {
+                "time": "18:00",
+                "date": "2024-06-30"
+            }
+        },
+        "accommodation": {
+            "makkah": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 100,
+                "image": "/images/voco-makkah.jpg"
+            },
+            "medina": {
+                "name": "VOCO",
+                "rating": 5,
+                "distance": 200,
+                "image": "/images/voco-medina.jpg"
+            }
+        }
+    },
+    {
+        "id": "8",
+        "name": "ITHRAA AL KHAIR 75",
+        "formula": "ITHRAA AL KHAIR 75",
+        "tripType": "Hajj",
+        "mois": "Mars",
+        "departureCity": "Paris",
+        "departureDate": "2025-03-15",
+        "returnDate": "2025-03-25",
+        "duration": 10,
+        "price": 2490,
+        "makkahHotel": "Hilton Suites Makkah",
+        "medinaHotel": "Pullman Zamzam Madina",
+        "makkahNights": 6,
+        "medinaNights": 3,
+        "airline": {
+            "name": "Saudia",
+            "logo": "/images/saudia-logo.png"
+        },
+        "accommodation": {
+            "makkah": {
+                "name": "Hilton Suites Makkah",
+                "stars": 5,
+                "distance": 50,
+                "images": []
+            },
+            "medina": {
+                "name": "Pullman Zamzam Madina",
+                "stars": 5,
+                "distance": 50,
+                "images": []
+            }
+        }
+    },
+    {
+        "id": "9",
+        "name": "ITHRAA AL KHAIR 83",
+        "formula": "ITHRAA AL KHAIR 83",
+        "tripType": "Hajj",
+        "mois": "Avril",
+        "departureCity": "Paris",
+        "departureDate": "2025-04-10",
+        "returnDate": "2025-04-20",
+        "duration": 10,
+        "price": 2790,
+        "makkahHotel": "Hilton Suites Makkah",
+        "medinaHotel": "Pullman Zamzam Madina",
+        "makkahNights": 6,
+        "medinaNights": 3,
+        "airline": {
+            "name": "Saudia",
+            "logo": "/images/saudia-logo.png"
+        },
+        "accommodation": {
+            "makkah": {
+                "name": "Hilton Suites Makkah",
+                "stars": 5,
+                "distance": 50,
+                "images": []
+            },
+            "medina": {
+                "name": "Pullman Zamzam Madina",
+                "stars": 5,
+                "distance": 50,
+                "images": []
+            }
+        }
+    }
+] 

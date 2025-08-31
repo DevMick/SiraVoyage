@@ -1,0 +1,241 @@
+{
+  "formulas": [
+    {
+      "id": "1",
+      "name": " Hajj Juin - Abidjan",
+      "tripType": " Hajj ",
+      "mois": " Juin ",
+      "departureCity": " Abidjan ",
+      "departureDate": "2025-05-20",
+      "returnDate": "2025-06-19",
+      "formula": " Eco confort ",
+      "duration": 30,
+      "makkahNights": 30,
+      "makkahHotel": " ZAHA TAIBA / Owais ",
+      "price": 5250000,
+      "airline": {
+        "name": "Saudia",
+        "logo": "/images/saudia-logo.png"
+      },
+      "images": [
+        {
+          "full": "/images/voco-makkah-8781928380-3x2.jpeg",
+          "thumbnail": "/images/voco-makkah-8781928380-3x2.jpeg",
+          "alt": "VOCO Makkah - Vue extérieure"
+        },
+        {
+          "full": "/images/430322242.jpg",
+          "thumbnail": "/images/430322242.jpg",
+          "alt": "Chambre luxueuse"
+        },
+        {
+          "full": "/images/430323339.jpg",
+          "thumbnail": "/images/430323339.jpg",
+          "alt": "Vue sur la Kaaba"
+        },
+        {
+          "full": "/images/430322361.jpg",
+          "thumbnail": "/images/430322361.jpg",
+          "alt": "Restaurant de l'hôtel"
+        }
+      ],
+      "flights": {
+        "departure": {
+          "departureTime": " Matin ",
+          "date": "2025-05-20",
+          "airlineLogo": "Air Côte d'Ivoire",
+          "flightImage": "/images/VolAbidjan.jpg"
+        },
+        "return": {
+          "departureTime": "Matin",
+          "date": "2025-06-19",
+          "airlineLogo": "Qatar Airways",
+          "flightImage": "/images/VolQatar.jpg"
+        }
+      },
+      "accommodation": {
+        "medina": {
+          "name": "Owais",
+          "rating": 4,
+          "reviews": 128,
+          "images": [
+            "/images/hotel1.jpg",
+            "/images/hotel2.jpg",
+            "/images/hotel3.jpg"
+          ],
+          "distance": "800m",
+          "walkingTime": "5 min à pied",
+          "checkIn": "2025-05-20",
+          "checkOut": "2025-06-19",
+          "nights": 30,
+          "mealPlan": "Pension complète"
+        },
+        "makkah": {
+          "name": "ZAHA TAIBA",
+          "rating": 4,
+          "reviews": 127,
+          "images": [
+            "/images/hotel4.jpg",
+            "/images/hotel5.jpg",
+            "/images/hotel6.jpg"
+          ],
+          "distance": "800m",
+          "walkingTime": "3 min à pied",
+          "checkIn": "2025-05-20",
+          "checkOut": "2025-06-19",
+          "nights": 30,
+          "mealPlan": "Pension complète"
+        }
+      },
+      "program": [
+        {
+          "day": "15",
+          "month": "JAN",
+          "title": "Départ de Paris",
+          "image": "/images/program1.jpg",
+          "description": "Le programme « Hajj et visite des sites religieux » est une initiative spirituelle complète qui permet aux fidèles de remplir l'un des cinq piliers de l'islam dans les meilleures conditions, tout en approfondissant leur foi à travers la découverte des hauts lieux de l'histoire islamique."
+        }
+      ],
+      "details": [
+        {
+          "title": "Conditions générales",
+          "icon": "fa-file-contract",
+          "content": "Les conditions générales de vente s'appliquent à tous nos voyages. Veuillez les consulter avant de procéder à la réservation."
+        },
+        {
+          "title": "Visa",
+          "icon": "fa-passport",
+          "content": "Le visa est inclus dans le prix du voyage. Nous nous chargeons de toutes les formalités."
+        }
+      ],
+      "tarifs": {
+        "individuelle": 11000000,
+        "double": 10500000,
+        "triple": 7000000,
+        "quadruple": 5250000
+      }
+    },
+    {
+      "id": "2",
+      "name": "Omra Février - Lyon",
+      "tripType": "Omra",
+      "mois": "Février",
+      "departureCity": "Lyon",
+      "departureDate": "2024-02-10",
+      "returnDate": "2024-02-20",
+      "formula": "Premium",
+      "duration": 10,
+      "makkahNights": 5,
+      "makkahHotel": "Al Ebaa Hotel",
+      "price": 1890,
+      "airline": {
+        "name": "Saudia",
+        "logo": "/images/saudia-logo.png"
+      },
+      "images": [
+        {
+          "full": "/images/66a4be3b6417f7.22039243_makkah3.jpeg",
+          "thumbnail": "/images/66a4be3b6417f7.22039243_makkah3.jpeg",
+          "alt": "Vue panoramique de Makkah"
+        },
+        {
+          "full": "/images/430322084.jpg",
+          "thumbnail": "/images/430322084.jpg",
+          "alt": "Suite de luxe"
+        },
+        {
+          "full": "/images/430322087.jpg",
+          "thumbnail": "/images/430322087.jpg",
+          "alt": "Salle de bain moderne"
+        },
+        {
+          "full": "/images/506323412.jpg",
+          "thumbnail": "/images/506323412.jpg",
+          "alt": "Vue nocturne"
+        }
+      ],
+      "flights": {
+        "departure": {
+          "departureTime": "09:15",
+          "date": "2024-02-10",
+          "airlineLogo": "/images/saudia-logo.png",
+          "flightImage": "/images/plane_departure.jpg"
+        },
+        "return": {
+          "departureTime": "19:15",
+          "date": "2024-02-20",
+          "airlineLogo": "/images/saudia-logo.png",
+          "flightImage": "/images/plane_return.jpg"
+        }
+      },
+      "accommodation": {
+        "medina": {
+          "name": "Nusk Al Hijrah",
+          "rating": 5,
+          "reviews": 145,
+          "images": [
+            "/images/hotel7.jpg",
+            "/images/hotel8.jpg",
+            "/images/hotel9.jpg"
+          ],
+          "distance": "400m de la Mosquée",
+          "walkingTime": "4 min à pied",
+          "checkIn": "2024-02-10",
+          "checkOut": "2024-02-15",
+          "nights": 5,
+          "mealPlan": "Petit-déjeuner inclus"
+        },
+        "makkah": {
+          "name": "Al Ebaa Hotel",
+          "rating": 5,
+          "reviews": 167,
+          "images": [
+            "/images/hotel10.jpg",
+            "/images/hotel11.jpg",
+            "/images/hotel12.jpg"
+          ],
+          "distance": "250m de la Mosquée",
+          "walkingTime": "2 min à pied",
+          "checkIn": "2024-02-15",
+          "checkOut": "2024-02-20",
+          "nights": 5,
+          "mealPlan": "Petit-déjeuner inclus"
+        }
+      },
+      "program": [
+        {
+          "day": "10",
+          "month": "FÉV",
+          "title": "Départ de Lyon",
+          "image": "/images/program3.jpg",
+          "description": "Rendez-vous à l'aéroport de Lyon-Saint Exupéry. Enregistrement et départ vers Djeddah. Arrivée à Djeddah, accueil par notre représentant et transfert vers Médine."
+        },
+        {
+          "day": "11",
+          "month": "FÉV",
+          "title": "Arrivée à Médine",
+          "image": "/images/program4.jpg",
+          "description": "Installation à l'hôtel Nusk Al Hijrah. Visite de la Mosquée du Prophète (ﷺ) et des lieux saints. Temps libre pour les prières et les visites."
+        }
+      ],
+      "details": [
+        {
+          "title": "Conditions générales",
+          "icon": "fa-file-contract",
+          "content": "Les conditions générales de vente s'appliquent à tous nos voyages. Veuillez les consulter avant de procéder à la réservation."
+        },
+        {
+          "title": "Visa",
+          "icon": "fa-passport",
+          "content": "Le visa est inclus dans le prix du voyage. Nous nous chargeons de toutes les formalités."
+        }
+      ],
+      "tarifs": {
+        "individuelle": 2190.00,
+        "double": 1590.00,
+        "triple": 1490.00,
+        "quadruple": 1390.00
+      }
+    }
+  ]
+} 

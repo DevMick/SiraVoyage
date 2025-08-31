@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page non trouvée - Sira Voyage</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #F5F5DC;
+        }
+        .error-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+        .error-code {
+            font-size: 8rem;
+            font-weight: 700;
+            color: #D4AF37;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+        .error-message {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+        .back-button {
+            background-color: #D4AF37;
+            color: white;
+            padding: 0.75rem 2rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        .back-button:hover {
+            background-color: #B38F2E;
+        }
+        .font-arabic {
+            font-family: 'Amiri', serif;
+        }
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
+        }
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #0F5132;
+        }
+        .logo-text span {
+            color: #B38F2E;
+            font-weight: 700;
+        }
+        /* Style personnalisé pour le logo */
+        .logo-img {
+            height: 5rem; /* 64px pour mobile */
+        }
+        
+        @media (min-width: 768px) {
+            .logo-img {
+                height: 5rem; /* 128px pour desktop */
+            }
+        }
+        .hero-section {
+            /* ... existing code ... */
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">Oups ! La page que vous recherchez n'existe pas.</div>
+        <a href="/" class="back-button">
+            <i class="fas fa-home mr-2"></i>
+            Retour à l'accueil
+        </a>
+    </div>
+    <div class="flex items-center">
+        <img src="images/Logo_Sira_Voyage.jpg" alt="SIRA VOYAGE" class="logo-img">
+    </div>
+</body>
+</html> 
