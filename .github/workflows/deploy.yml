@@ -32,10 +32,10 @@ jobs:
         echo "FTP Host: ${{ secrets.FTP_HOST }}"
         echo "FTP Username: ${{ secrets.FTP_USERNAME }}"
         echo "FTP Password: [HIDDEN]"
-        echo "Local directory: ./build/"
+        echo "Local directory: ./public/ (fichiers statiques)"
         echo "Server directory: /public_html/ (répertoire web)"
-        echo "📁 Contenu du dossier build à déployer:"
-        ls -la ./build/
+        echo "📁 Contenu du dossier public à déployer:"
+        ls -la ./public/
         echo "🔍 Recherche de répertoires public* :"
         find . -type d -name "*public*" 2>/dev/null || echo "Aucun répertoire public trouvé"
 
@@ -58,40 +58,13 @@ jobs:
         quit;
         "
       
-    - name: Create production build
+    - name: Prepare static files for deployment
       run: |
-        # Créer le dossier de build
-        mkdir -p build
-        
-        # Copier les fichiers nécessaires
-        cp -r public/* build/
-        cp package.json build/
-        cp app.js build/
-        cp -r routes build/
-        cp -r data build/
-        cp -r models build/ 2>/dev/null || true
-        
-        # Créer package.json optimisé pour production
-        cat > build/package.json << EOF
-        {
-          "name": "sira-voyage",
-          "version": "1.0.0",
-          "description": "Site web de voyages pour Omra et Hajj - AL BAYT",
-          "main": "app.js",
-          "scripts": {
-            "start": "node app.js"
-          },
-          "dependencies": {
-            "express": "^4.18.2",
-            "compression": "^1.7.4",
-            "helmet": "^7.1.0",
-            "cors": "^2.8.5"
-          },
-          "engines": {
-            "node": ">=16.0.0"
-          }
-        }
-        EOF
+        echo "📁 Vérification du dossier public après build CSS:"
+        ls -la ./public/
+        echo "🎨 Vérification que le CSS a été compilé:"
+        ls -la ./public/css/ || echo "Dossier CSS non trouvé"
+        echo "✅ Les fichiers statiques sont prêts dans ./public/"
         
     - name: Deploy to Namecheap via FTP
       if: github.ref == 'refs/heads/main'
@@ -102,7 +75,7 @@ jobs:
         password: ${{ secrets.FTP_PASSWORD }}
         port: 21
         protocol: ftp
-        local-dir: ./build/
+        local-dir: ./public/
         server-dir: /public_html/
         timeout: 60000
         log-level: verbose

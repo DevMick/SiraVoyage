@@ -1,7 +1,13 @@
-# Test des Chemins de Déploiement - SiraVoyage
+# Configuration de Déploiement - SiraVoyage
 
 ## 🎯 Objectif
-Trouver le bon chemin `server-dir` pour que l'application React s'affiche sur omrahajjabidjan.com
+Déployer l'application Node.js/Express avec fichiers statiques sur omrahajjabidjan.com
+
+## ✅ Problème résolu !
+**Nature du projet identifiée** : Node.js/Express avec fichiers statiques (PAS React)
+- Dossier source : `./public/` (contient HTML, CSS, JS, images)
+- Build : Compilation CSS avec Tailwind uniquement
+- Déploiement : Fichiers statiques du dossier `public/`
 
 ## 🔍 Chemins à tester (dans l'ordre)
 
